@@ -1,0 +1,11 @@
+item.soul_emerald.name=Soul Emerald
+item.empty_soul_totem.name=Empty Soul Totem
+item.soul_totem.name=Soul Totem
+
+tile.soul_totem.name=Soul Totem
+tile.empty_soul_totem.name=Empty Soul Totem
+
+empty_soul_totem.tooltip=An empty vessel for souls.
+soul_totem.tooltip=Souls: %s / %s
+
+enchantment.soul_mending=Soul Mending

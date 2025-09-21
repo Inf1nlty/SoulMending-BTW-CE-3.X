@@ -1,0 +1,11 @@
+item.soul_emerald.name=灵魂绿宝石
+item.empty_soul_totem.name=空灵魂图腾
+item.soul_totem.name=灵魂图腾
+
+tile.soul_totem.name=灵魂图腾
+tile.empty_soul_totem.name=空灵魂图腾
+
+empty_soul_totem.tooltip=一个空的灵魂图腾
+soul_totem.tooltip=灵魂储存量：%s / %s
+
+enchantment.soul_mending=灵魂修补
