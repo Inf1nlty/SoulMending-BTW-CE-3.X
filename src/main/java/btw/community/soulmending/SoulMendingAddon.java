@@ -6,7 +6,7 @@ import com.inf1nlty.soulmending.EnchantmentSoulMending;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
 import com.inf1nlty.soulmending.block.tileentity.TileEntityISoulTotem;
 import com.inf1nlty.soulmending.client.TileEntitySoulTotemRenderer;
-import com.inf1nlty.soulmending.crafting.SMRecipes;
+import com.inf1nlty.soulmending.init.SMInit;
 import com.inf1nlty.soulmending.item.SoulMendingItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -21,7 +21,7 @@ public class SoulMendingAddon extends BTWAddon {
         SoulMendingItems.initSMItems();
         EnchantmentSoulMending.registerEnchantment();
 
-        SMRecipes.initRecipes();
+        SMInit.init();
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             registerClientTESR();

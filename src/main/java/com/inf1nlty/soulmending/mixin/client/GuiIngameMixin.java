@@ -1,5 +1,6 @@
 package com.inf1nlty.soulmending.mixin.client;
 
+import com.inf1nlty.soulmending.SoulMendingConfig;
 import com.inf1nlty.soulmending.block.BlockSoulTotem;
 import com.inf1nlty.soulmending.block.tileentity.TileEntityISoulTotem;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
@@ -15,6 +16,8 @@ public class GuiIngameMixin {
 
     @Inject(method = "renderGameOverlay", at = @At("RETURN"))
     private void injectSoulTotemHUD(float partialTicks, boolean b, int mx, int my, CallbackInfo ci) {
+        if (!SoulMendingConfig.showSoulHUD) return;
+
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.objectMouseOver == null) return;
 

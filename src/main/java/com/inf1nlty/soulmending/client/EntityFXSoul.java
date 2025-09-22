@@ -1,5 +1,6 @@
 package com.inf1nlty.soulmending.client;
 
+import com.inf1nlty.soulmending.SoulMendingConfig;
 import net.minecraft.src.*;
 
 public class EntityFXSoul extends EntityFX {
@@ -115,6 +116,8 @@ public class EntityFXSoul extends EntityFX {
     }
 
     public static void spawnRing(World world, double blockX, double blockY, double blockZ) {
+        if (!SoulMendingConfig.renderSoulParticles) return;
+
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.effectRenderer == null) return;
 
@@ -131,6 +134,8 @@ public class EntityFXSoul extends EntityFX {
     }
 
     public static void spawnRingToPlayer(World world, double eventX, double eventY, double eventZ) {
+        if (!SoulMendingConfig.renderSoulParticles) return;
+
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.effectRenderer == null) return;
 
@@ -150,6 +155,8 @@ public class EntityFXSoul extends EntityFX {
     }
 
     public static void findAndSpawnGatherToItem(World world, double x, double y, double z) {
+        if (!SoulMendingConfig.renderSoulParticles) return;
+
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.effectRenderer == null) return;
 
@@ -173,6 +180,8 @@ public class EntityFXSoul extends EntityFX {
     }
 
     public static void spawnGatherToItem(World world, Entity targetEntity) {
+        if (!SoulMendingConfig.renderSoulParticles) return;
+
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.effectRenderer == null || targetEntity == null) return;
 
@@ -192,6 +201,8 @@ public class EntityFXSoul extends EntityFX {
     }
 
     public static void spawnGatherToBlock(World world, double blockX, double blockY, double blockZ) {
+        if (!SoulMendingConfig.renderSoulParticles) return;
+
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.effectRenderer == null) return;
 

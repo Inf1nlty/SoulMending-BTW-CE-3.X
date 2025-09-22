@@ -9,3 +9,8 @@ empty_soul_totem.tooltip=An empty vessel for souls.
 soul_totem.tooltip=Souls: %s / %s
 
 enchantment.soul_mending=Soul Mending
+
+options.soulmending.soulParticles=Soul Particles
+options.soulmending.soulHUD=Soul Storage HUD
+options.soulmending.on=ON
+options.soulmending.off=OFF
