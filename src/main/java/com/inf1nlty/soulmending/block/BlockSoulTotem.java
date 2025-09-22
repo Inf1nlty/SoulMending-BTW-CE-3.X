@@ -33,29 +33,21 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, int blockId, int meta) {
+    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+        if (world.isRemote) return;
+
         TileEntitySoulTotem te = (TileEntitySoulTotem) world.getBlockTileEntity(x, y, z);
         if (te != null) {
             te.dropAllItems(world, x, y, z);
 
-            boolean dropTotem = true;
-            EntityPlayer breaker = world.getClosestPlayer(x + 0.5, y + 0.5, z + 0.5, 8.0);
-
-            if (breaker != null && breaker.capabilities.isCreativeMode) {
-                dropTotem = false;
-            }
-
-            if (dropTotem && !world.isRemote) {
+            if (player == null || !player.capabilities.isCreativeMode) {
                 ItemStack totem;
-
                 if (te.getStoredSoul() <= 0) {
                     totem = InventoryHelper.convertToEmptySoulTotem(te.getTotemAsItemStack());
-
                 } else {
                     totem = new ItemStack(SoulMendingBlocks.soulTotemItem);
                     SoulTotemItem.setStoredSoul(totem, te.getStoredSoul());
                     NBTTagList ench = te.getEnchantTag();
-
                     if (ench != null && ench.tagCount() > 0) {
                         if (totem.stackTagCompound == null)
                             totem.stackTagCompound = new NBTTagCompound();
@@ -66,6 +58,11 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
                 world.spawnEntityInWorld(entityItem);
             }
         }
+        super.onBlockHarvested(world, x, y, z, meta, player);
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int blockId, int meta) {
         super.breakBlock(world, x, y, z, blockId, meta);
     }
 

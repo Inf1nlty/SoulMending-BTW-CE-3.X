@@ -26,7 +26,7 @@ public abstract class RenderItemMixin {
         if (soul > 0 && soul < maxSoul) {
             float percent = (float) soul / (float) maxSoul;
             int barLength = (int)Math.floor(13.0D * percent);
-            int barColor = getDurabilityColor(percent);
+            int barColor = getBarColor(percent);
 
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -43,7 +43,7 @@ public abstract class RenderItemMixin {
     }
 
     @Unique
-    private int getDurabilityColor(float percent) {
+    private int getBarColor(float percent) {
         int red = (int)(255.0F * (1.0F - percent));
         int green = 255 - red;
         return (red << 16) | (green << 8);

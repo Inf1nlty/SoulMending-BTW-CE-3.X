@@ -26,7 +26,7 @@ public abstract class GuiContainerMixin {
         if (soul > 0 && soul < maxSoul) {
             float percent = (float) soul / (float) maxSoul;
             int barLength = (int)Math.floor(13.0D * percent);
-            int barColor = getDurabilityColor(percent);
+            int barColor = getBarColor(percent);
 
             int x = slot.xDisplayPosition;
             int y = slot.yDisplayPosition;
@@ -46,7 +46,7 @@ public abstract class GuiContainerMixin {
     }
 
     @Unique
-    private int getDurabilityColor(float percent) {
+    private int getBarColor(float percent) {
         int red = (int)(255.0F * (1.0F - percent));
         int green = 255 - red;
         return (red << 16) | (green << 8);

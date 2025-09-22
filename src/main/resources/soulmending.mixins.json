@@ -4,6 +4,7 @@
   "package": "com.inf1nlty.soulmending.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "block.BlockDispenserBlockMixin",
     "block.BlockPortalSoulPossessMixin",
     "block.HopperTileEntitySoulPossessMixin",
     "entity.EntityCreatureMixin",
