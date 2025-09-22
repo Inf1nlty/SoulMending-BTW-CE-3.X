@@ -1,15 +1,9 @@
 package com.inf1nlty.soulmending.block;
 
-import btw.block.model.BlockModel;
 import com.inf1nlty.soulmending.block.tileentity.TileEntityEmptySoulTotem;
-import com.inf1nlty.soulmending.client.SoulTotemModel;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
 
-public class BlockEmptySoulTotem extends BlockContainer implements IBlockModelProvider {
-
-    private final BlockModel modelSoulTotem = new SoulTotemModel();
+public class BlockEmptySoulTotem extends BlockContainer {
 
     public BlockEmptySoulTotem(int id) {
         super(id, Material.iron);
@@ -17,7 +11,7 @@ public class BlockEmptySoulTotem extends BlockContainer implements IBlockModelPr
         this.setResistance(1200.0F);
         this.setStepSound(Block.soundClothFootstep);
         this.setUnlocalizedName("empty_soul_totem");
-        this.setTextureName("soulmending:empty_soul_totem");
+        this.setTextureName("soulmending:empty_soul_totem_particle");
     }
 
     @Override
@@ -80,6 +74,16 @@ public class BlockEmptySoulTotem extends BlockContainer implements IBlockModelPr
     }
 
     @Override
+    public int getFacing(int meta) {
+        return meta;
+    }
+
+    @Override
+    public int setFacing(int meta, int facing) {
+        return facing;
+    }
+
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return AxisAlignedBB.getAABBPool().getAABB(
                 x + 0.1875D, y + 0.0D,   z + 0.25D,
@@ -96,10 +100,5 @@ public class BlockEmptySoulTotem extends BlockContainer implements IBlockModelPr
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         this.setBlockBounds(0.1875F, 0.0F, 0.25F, 0.8125F, 1.0F, 0.75F);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public BlockModel getBlockModel() {
-        return modelSoulTotem;
     }
 }

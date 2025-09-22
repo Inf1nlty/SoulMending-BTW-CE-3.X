@@ -5,13 +5,11 @@ import btw.AddonHandler;
 import com.inf1nlty.soulmending.EnchantmentSoulMending;
 import com.inf1nlty.soulmending.SoulMendingConfig;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
-import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
-import com.inf1nlty.soulmending.client.TileEntitySoulTotemRenderer;
+import com.inf1nlty.soulmending.client.TileEntityTotemRenderer;
 import com.inf1nlty.soulmending.init.SMInit;
 import com.inf1nlty.soulmending.item.SoulMendingItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.src.TileEntityRenderer;
 
 public class SoulMendingAddon extends BTWAddon {
     @Override
@@ -26,12 +24,7 @@ public class SoulMendingAddon extends BTWAddon {
         SoulMendingConfig.load();
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            registerClientTESR();
+            TileEntityTotemRenderer.registerTotemTESR();
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void registerClientTESR() {
-        TileEntityRenderer.instance.specialRendererMap.put(TileEntitySoulTotem.class, new TileEntitySoulTotemRenderer());
     }
 }

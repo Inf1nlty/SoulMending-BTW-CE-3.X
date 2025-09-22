@@ -1,5 +1,6 @@
 package com.inf1nlty.soulmending.item;
 
+import btw.util.MiscUtils;
 import com.inf1nlty.soulmending.EnchantmentSoulMending;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
 import com.inf1nlty.soulmending.block.tileentity.TileEntityEmptySoulTotem;
@@ -59,8 +60,10 @@ public class EmptySoulTotemItem extends SMItem {
         if (!world.isAirBlock(placeX, placeY, placeZ))
             return false;
 
-        world.setBlock(placeX, placeY, placeZ, SoulMendingBlocks.emptySoulTotem.blockID, 0, 3);
+        int facing = MiscUtils.convertPlacingEntityOrientationToBlockFacingReversed(player);
+        world.setBlock(placeX, placeY, placeZ, SoulMendingBlocks.emptySoulTotem.blockID, facing, 3);
         TileEntity te = world.getBlockTileEntity(placeX, placeY, placeZ);
+
         if (te instanceof TileEntityEmptySoulTotem) {
             if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("ench")) {
                 ((TileEntityEmptySoulTotem) te).setEnchantTag(stack.stackTagCompound.getTagList("ench"));

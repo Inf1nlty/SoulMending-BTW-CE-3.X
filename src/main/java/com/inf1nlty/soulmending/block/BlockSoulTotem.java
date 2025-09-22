@@ -1,17 +1,11 @@
 package com.inf1nlty.soulmending.block;
 
-import btw.block.model.BlockModel;
 import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
-import com.inf1nlty.soulmending.client.SoulTotemModel;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
 import com.inf1nlty.soulmending.util.InventoryHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
 
-public class BlockSoulTotem extends BlockContainer implements IBlockModelProvider {
-
-    private final BlockModel modelSoulTotem = new SoulTotemModel();
+public class BlockSoulTotem extends BlockContainer {
 
     public BlockSoulTotem(int id) {
         super(id, Material.iron);
@@ -19,7 +13,7 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
         this.setResistance(1200.0F);
         this.setStepSound(Block.soundClothFootstep);
         this.setUnlocalizedName("soul_totem");
-        this.setTextureName("soulmending:soul_totem");
+        this.setTextureName("soulmending:soul_totem_particle");
     }
 
     @Override
@@ -114,6 +108,16 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
     }
 
     @Override
+    public int getFacing(int meta) {
+        return meta;
+    }
+
+    @Override
+    public int setFacing(int meta, int facing) {
+        return facing;
+    }
+
+    @Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
         return this.getCollisionBoundingBoxFromPool(world, x, y, z);
     }
@@ -121,8 +125,8 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return AxisAlignedBB.getAABBPool().getAABB(
-                x + 0.1875D, y + 0.0D,   z + 0.25D,
-                x + 0.8125D, y + 1.0D,   z + 0.75D
+                x + 0.1875D, y + 0.0D, z + 0.25D,
+                x + 0.8125D, y + 1.0D, z + 0.75D
         );
     }
 
@@ -130,10 +134,5 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
     @SuppressWarnings("deprecation")
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         this.setBlockBounds(0.1875F, 0.0F, 0.25F, 0.8125F, 1.0F, 0.75F);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public BlockModel getBlockModel() {
-        return modelSoulTotem;
     }
 }

@@ -1,10 +1,11 @@
 package com.inf1nlty.soulmending.block.tileentity;
 
+import btw.block.tileentity.TileEntityDataPacketHandler;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
 import com.inf1nlty.soulmending.util.ISoulPossessable;
 import net.minecraft.src.*;
 
-public class TileEntityEmptySoulTotem extends TileEntity implements ISoulPossessable {
+public class TileEntityEmptySoulTotem extends TileEntity implements TileEntityDataPacketHandler, ISoulPossessable, ITotemTileEntity {
 
     private NBTTagList enchantTag = null;
     private transient boolean suppressNextDrop = false;
@@ -17,9 +18,16 @@ public class TileEntityEmptySoulTotem extends TileEntity implements ISoulPossess
         return this.enchantTag;
     }
 
+    @Override
+    public ItemStack getStackInSlot(int i) {
+        return null;
+    }
+
     public void suppressNextDrop() {
         this.suppressNextDrop = true;
     }
+
+    @SuppressWarnings("unused")
     public boolean shouldSuppressDrop() {
         return this.suppressNextDrop;
     }
@@ -49,6 +57,17 @@ public class TileEntityEmptySoulTotem extends TileEntity implements ISoulPossess
     }
 
     @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        if (enchantTag != null) {
+            tag.setTag("ench", enchantTag);
+        }
+
+        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, tag);
+    }
+
+    @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (enchantTag != null) {
@@ -60,6 +79,20 @@ public class TileEntityEmptySoulTotem extends TileEntity implements ISoulPossess
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.enchantTag = tag.hasKey("ench") ? tag.getTagList("ench") : null;
+    }
+
+    @Override
+    public void readNBTFromPacket(NBTTagCompound tag) {
+        if (tag.hasKey("ench")) {
+            this.enchantTag = tag.getTagList("ench");
+
+        } else {
+            this.enchantTag = null;
+        }
+
+        if (worldObj != null) {
+            worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+        }
     }
 
     @Override

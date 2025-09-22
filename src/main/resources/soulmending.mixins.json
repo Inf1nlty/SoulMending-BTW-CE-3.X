@@ -11,6 +11,7 @@
     "entity.EntityGhastMixin",
     "entity.EntityItemMixin",
     "entity.EntityPlayerMixin",
+    "entity.EntityWitherMixin",
     "entity.UrnEntitySoulPossessMixin"
   ],
   "client": [

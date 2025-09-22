@@ -9,7 +9,7 @@ import com.inf1nlty.soulmending.util.SoulMendingHelper;
 import com.inf1nlty.soulmending.util.ISoulPossessable;
 import net.minecraft.src.*;
 
-public class TileEntitySoulTotem extends TileEntity implements IInventory, TileEntityDataPacketHandler, ISoulPossessable {
+public class TileEntitySoulTotem extends TileEntity implements IInventory, TileEntityDataPacketHandler, ISoulPossessable, ITotemTileEntity {
 
     private ItemStack[] inventory = new ItemStack[1];
     private int storedSoul = 0;
@@ -150,6 +150,10 @@ public class TileEntitySoulTotem extends TileEntity implements IInventory, TileE
             tag.setCompoundTag("x", itemTag);
         }
 
+        if (enchantTag != null) {
+            tag.setTag("ench", enchantTag);
+        }
+
         return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, tag);
     }
 
@@ -167,6 +171,13 @@ public class TileEntitySoulTotem extends TileEntity implements IInventory, TileE
 
         } else {
             inventory[0] = null;
+        }
+
+        if (tag.hasKey("ench")) {
+            this.enchantTag = tag.getTagList("ench");
+
+        } else {
+            this.enchantTag = null;
         }
 
         if (worldObj != null) {
