@@ -2,7 +2,7 @@ package com.inf1nlty.soulmending.item;
 
 import com.inf1nlty.soulmending.EnchantmentSoulMending;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
-import com.inf1nlty.soulmending.block.tileentity.TileEntityISoulTotem;
+import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
 import net.minecraft.src.*;
 import java.util.List;
 
@@ -96,12 +96,12 @@ public class SoulTotemItem extends SMItem {
 
         world.setBlock(placeX, placeY, placeZ, SoulMendingBlocks.soulTotem.blockID, 0, 3);
         TileEntity te = world.getBlockTileEntity(placeX, placeY, placeZ);
-        if (te instanceof TileEntityISoulTotem) {
+        if (te instanceof TileEntitySoulTotem) {
             int soul = getStoredSoul(stack);
-            ((TileEntityISoulTotem) te).setStoredSoul(soul);
+            ((TileEntitySoulTotem) te).setStoredSoul(soul);
 
             if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("ench")) {
-                ((TileEntityISoulTotem) te).setEnchantTag(stack.stackTagCompound.getTagList("ench"));
+                ((TileEntitySoulTotem) te).setEnchantTag(stack.stackTagCompound.getTagList("ench"));
             }
         }
         world.playSoundEffect(placeX + 0.5, placeY + 0.5, placeZ + 0.5, "step.cloth", 0.7F, 1.0F);

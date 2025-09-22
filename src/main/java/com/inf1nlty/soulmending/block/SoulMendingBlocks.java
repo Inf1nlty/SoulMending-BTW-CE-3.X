@@ -1,7 +1,7 @@
 package com.inf1nlty.soulmending.block;
 
 import com.inf1nlty.soulmending.block.tileentity.TileEntityEmptySoulTotem;
-import com.inf1nlty.soulmending.block.tileentity.TileEntityISoulTotem;
+import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
 import com.inf1nlty.soulmending.item.EmptySoulTotemItem;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
 import net.minecraft.src.Item;
@@ -18,7 +18,7 @@ public class SoulMendingBlocks {
 
         soulTotem = new BlockSoulTotem(3702);
         soulTotemItem = new SoulTotemItem(3703);
-        TileEntity.addMapping(TileEntityISoulTotem.class, "soulmending:soul_totem");
+        TileEntity.addMapping(TileEntitySoulTotem.class, "soulmending:soul_totem");
 
         emptySoulTotem = new BlockEmptySoulTotem(3704);
         emptySoulTotemItem = new EmptySoulTotemItem(3705);

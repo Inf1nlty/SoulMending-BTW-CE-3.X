@@ -38,11 +38,11 @@ public class TileEntityEmptySoulTotem extends TileEntity implements ISoulPossess
             worldObj.setBlock(xCoord, yCoord, zCoord, SoulMendingBlocks.soulTotem.blockID, 0, 3);
             TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
 
-            if (te instanceof TileEntityISoulTotem) {
-                ((TileEntityISoulTotem) te).setStoredSoul(soul);
+            if (te instanceof TileEntitySoulTotem) {
+                ((TileEntitySoulTotem) te).setStoredSoul(soul);
 
                 if (this.enchantTag != null)
-                    ((TileEntityISoulTotem) te).setEnchantTag((NBTTagList) this.enchantTag.copy());
+                    ((TileEntitySoulTotem) te).setEnchantTag((NBTTagList) this.enchantTag.copy());
                 worldObj.playAuxSFX(2286, xCoord, yCoord, zCoord, 10010);
             }
         }

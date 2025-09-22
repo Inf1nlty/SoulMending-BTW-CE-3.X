@@ -9,7 +9,7 @@ import com.inf1nlty.soulmending.util.SoulMendingHelper;
 import com.inf1nlty.soulmending.util.ISoulPossessable;
 import net.minecraft.src.*;
 
-public class TileEntityISoulTotem extends TileEntity implements IInventory, TileEntityDataPacketHandler, ISoulPossessable {
+public class TileEntitySoulTotem extends TileEntity implements IInventory, TileEntityDataPacketHandler, ISoulPossessable {
 
     private ItemStack[] inventory = new ItemStack[1];
     private int storedSoul = 0;
@@ -142,6 +142,7 @@ public class TileEntityISoulTotem extends TileEntity implements IInventory, Tile
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("StoredSoul", this.storedSoul);
 
         if (inventory[0] != null) {
             NBTTagCompound itemTag = new NBTTagCompound();
@@ -154,6 +155,11 @@ public class TileEntityISoulTotem extends TileEntity implements IInventory, Tile
 
     @Override
     public void readNBTFromPacket(NBTTagCompound tag) {
+
+        if (tag.hasKey("StoredSoul")) {
+            this.storedSoul = tag.getInteger("StoredSoul");
+        }
+
         NBTTagCompound itemTag = tag.getCompoundTag("x");
 
         if (itemTag != null) {

@@ -14,9 +14,11 @@
   ],
   "client": [
     "client.BTWEffectManagerMixin",
+    "client.GuiContainerMixin",
     "client.GuiIngameMixin",
     "client.GuiVideoSettingsMixin",
-    "client.RenderBlocksMixin"
+    "client.RenderBlocksMixin",
+    "client.RenderItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

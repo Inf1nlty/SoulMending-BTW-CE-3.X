@@ -1,7 +1,7 @@
 package com.inf1nlty.soulmending.block;
 
 import btw.block.model.BlockModel;
-import com.inf1nlty.soulmending.block.tileentity.TileEntityISoulTotem;
+import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
 import com.inf1nlty.soulmending.client.SoulTotemModel;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
 import com.inf1nlty.soulmending.util.InventoryHelper;
@@ -29,12 +29,12 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
 
     @Override
     public TileEntity createNewTileEntity(World world) {
-        return new TileEntityISoulTotem();
+        return new TileEntitySoulTotem();
     }
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int blockId, int meta) {
-        TileEntityISoulTotem te = (TileEntityISoulTotem) world.getBlockTileEntity(x, y, z);
+        TileEntitySoulTotem te = (TileEntitySoulTotem) world.getBlockTileEntity(x, y, z);
         if (te != null) {
             te.dropAllItems(world, x, y, z);
 
@@ -72,7 +72,7 @@ public class BlockSoulTotem extends BlockContainer implements IBlockModelProvide
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) return true;
-        TileEntityISoulTotem te = (TileEntityISoulTotem) world.getBlockTileEntity(x, y, z);
+        TileEntitySoulTotem te = (TileEntitySoulTotem) world.getBlockTileEntity(x, y, z);
         if (te == null) return false;
 
         ItemStack stackInTotem = te.getStackInSlot(0);

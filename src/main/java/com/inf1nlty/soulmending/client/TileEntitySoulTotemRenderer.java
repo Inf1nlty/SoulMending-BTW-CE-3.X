@@ -1,6 +1,6 @@
 package com.inf1nlty.soulmending.client;
 
-import com.inf1nlty.soulmending.block.tileentity.TileEntityISoulTotem;
+import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 
@@ -8,7 +8,7 @@ public class TileEntitySoulTotemRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
-        if (!(te instanceof TileEntityISoulTotem tile)) return;
+        if (!(te instanceof TileEntitySoulTotem tile)) return;
 
         ItemStack stack = tile.getStackInSlot(0);
 

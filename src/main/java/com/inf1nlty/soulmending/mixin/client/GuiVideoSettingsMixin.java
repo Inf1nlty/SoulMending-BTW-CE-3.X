@@ -22,27 +22,62 @@ public abstract class GuiVideoSettingsMixin extends GuiScreen {
     @Unique
     private static final int SOUL_HUD_BTN_ID = 5002;
 
-    @SuppressWarnings("unchecked")
     @Inject(method = "initGui", at = @At("TAIL"))
+    @SuppressWarnings("unchecked")
     private void soulmending$addSoulMendingButtons(CallbackInfo ci) {
-        int yBase = this.height / 6 + 210;
-        int x = this.width / 2 - 100;
 
-        GuiButton soulParticlesButton = new GuiButton(SOUL_PARTICLES_BTN_ID, x, yBase, 200, 20, getSoulParticlesLabel());
-        GuiButton soulHudButton = new GuiButton(SOUL_HUD_BTN_ID, x, yBase + 24, 200, 20, getSoulHudLabel());
+        int optionCount = 0;
+        for (Object o : this.buttonList) {
+            if (o instanceof GuiButton btn && btn.id != 200) {
+                optionCount++;
+            }
+        }
 
-        ((List<GuiButton>) this.buttonList).add(soulParticlesButton);
-        ((List<GuiButton>) this.buttonList).add(soulHudButton);
+        int yOffset = getYOffset();
+        int x1 = this.width / 2 - 155 + (optionCount % 2) * 160;
+        int y1 = this.height / 7 + yOffset + 24 * (optionCount / 2);
+        GuiButton soulParticlesButton = new GuiButton(SOUL_PARTICLES_BTN_ID, x1, y1, 150, 20, getSoulParticlesLabel());
+        ((List<GuiButton>) this.buttonList).add(optionCount, soulParticlesButton);
+
+        optionCount++;
+        int x2 = this.width / 2 - 155 + (optionCount % 2) * 160;
+        int y2 = this.height / 7 + yOffset + 24 * (optionCount / 2);
+        GuiButton soulHudButton = new GuiButton(SOUL_HUD_BTN_ID, x2, y2, 150, 20, getSoulHudLabel());
+        ((List<GuiButton>) this.buttonList).add(optionCount, soulHudButton);
+        for (Object o : this.buttonList) {
+            if (o instanceof GuiButton btn && btn.id == 200) {
+                btn.yPosition += 24;
+                break;
+            }
+        }
+    }
+
+    @Unique
+    private int getYOffset() {
+        boolean is64bit = false;
+        String[] props = new String[] {"sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch"};
+        for (String key : props) {
+            String v = System.getProperty(key);
+            if (v != null && v.contains("64")) {
+                is64bit = true;
+                break;
+            }
+        }
+        return is64bit ? -8 : -21;
     }
 
     @Inject(method = "actionPerformed", at = @At("HEAD"))
     private void soulmending$onSoulButton(GuiButton button, CallbackInfo ci) {
+
         if (button.id == SOUL_PARTICLES_BTN_ID) {
             SoulMendingConfig.renderSoulParticles = !SoulMendingConfig.renderSoulParticles;
             button.displayString = getSoulParticlesLabel();
+            SoulMendingConfig.save();
+
         } else if (button.id == SOUL_HUD_BTN_ID) {
             SoulMendingConfig.showSoulHUD = !SoulMendingConfig.showSoulHUD;
             button.displayString = getSoulHudLabel();
+            SoulMendingConfig.save();
         }
     }
 

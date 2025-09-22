@@ -2,7 +2,7 @@ package com.inf1nlty.soulmending.mixin.client;
 
 import com.inf1nlty.soulmending.SoulMendingConfig;
 import com.inf1nlty.soulmending.block.BlockSoulTotem;
-import com.inf1nlty.soulmending.block.tileentity.TileEntityISoulTotem;
+import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
@@ -33,9 +33,9 @@ public class GuiIngameMixin {
             if (block instanceof BlockSoulTotem) {
                 TileEntity te = world.getBlockTileEntity(x, y, z);
 
-                if (te instanceof TileEntityISoulTotem) {
+                if (te instanceof TileEntitySoulTotem) {
 
-                    int soul = ((TileEntityISoulTotem) te).getStoredSoul();
+                    int soul = ((TileEntitySoulTotem) te).getStoredSoul();
                     int maxSoul = SoulTotemItem.MAX_SOUL;
                     float percent = (float) soul / (float) maxSoul;
                     String color;
