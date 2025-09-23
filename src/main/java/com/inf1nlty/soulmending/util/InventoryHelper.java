@@ -133,7 +133,7 @@ public class InventoryHelper {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null && stack.getItem() == SoulMendingBlocks.soulTotemItem) {
                 int soul = SoulTotemItem.getStoredSoul(stack);
-                if (soul >= 5000 && soul > maxSoul) {
+                if (soul >= 1 && soul > maxSoul) {
                     maxSoul = soul;
                     bestIndex = i;
                 }
@@ -143,7 +143,7 @@ public class InventoryHelper {
         if (bestIndex != -1) {
             ItemStack stack = inv.getStackInSlot(bestIndex);
 
-            int newSoul = maxSoul - 5000;
+            int newSoul = maxSoul - 1;
 
             if (newSoul <= 0) {
                 ItemStack empty = InventoryHelper.convertToEmptySoulTotem(stack);
@@ -153,8 +153,9 @@ public class InventoryHelper {
                 SoulTotemItem.setStoredSoul(stack, newSoul);
             }
 
-            player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 20*5, 1)); // Absorption 2，5 seconds
-            player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 20*5, 1)); // Regeneration 2, 5 seconds
+            player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 20*10, 4)); // Absorption V, 10s
+            player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 20*10, 1)); // Regeneration II, 10s
+            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 20*10, 2));   // Resistance III, 10s
             player.worldObj.playSoundAtEntity(player, SoulMendingAddon.SOULMENDING_TOTEM_USE.sound(), 1.0F, 1.0F);
             EntityTotemFX.Provider.spawn(player.worldObj, player.posX, player.posY + 1.0, player.posZ);
             return true;

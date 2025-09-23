@@ -2,12 +2,17 @@ package com.inf1nlty.soulmending.mixin.client;
 
 import com.inf1nlty.soulmending.client.EntitySoulFX;
 import com.inf1nlty.soulmending.client.EntityTotemFX;
+import com.inf1nlty.soulmending.client.ParticleSpawnQueue;
 import com.prupe.mcpatcher.sky.FireworksHelper;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import java.util.List;
 
 @Mixin(EffectRenderer.class)
@@ -115,5 +120,10 @@ public abstract class EffectRendererMixin {
                 GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             }
         }
+    }
+
+    @Inject(method = "updateEffects", at = @At("TAIL"))
+    private void soulmending$flushQueuedParticles(CallbackInfo ci) {
+        ParticleSpawnQueue.flush();
     }
 }

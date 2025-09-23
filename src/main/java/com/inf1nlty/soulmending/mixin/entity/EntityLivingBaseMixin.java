@@ -19,7 +19,7 @@ public abstract class EntityLivingBaseMixin {
 
             if (!player.worldObj.isRemote && player.getHealth() - amount <= 0.0F) {
                 if (InventoryHelper.trySoulTotemRevive(player)) {
-                    player.setHealth(1.0F);
+                    player.setHealth(2.0F);
                     cir.setReturnValue(false);
                 }
             }

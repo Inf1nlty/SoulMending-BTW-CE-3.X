@@ -13,6 +13,7 @@ public class EntityTotemFX extends EntityFX {
 
     public EntityTotemFX(World world, double x, double y, double z, double dirX, double dirY, double dirZ) {
         super(world, x, y, z, 0, 0, 0);
+
         double norm = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
         this.motionDirX = norm > 0.001 ? dirX / norm : 1.0;
         this.motionDirY = norm > 0.001 ? dirY / norm : 0.1;
@@ -23,17 +24,20 @@ public class EntityTotemFX extends EntityFX {
         this.targetZ = z + this.motionDirZ * travelDist;
         this.travelDuration = 100;
         this.travelTick = 0;
-        this.particleScale = 0.5F + rand.nextFloat() * 0.28F;
+        this.particleScale = 0.1F + rand.nextFloat() * 0.28F;
         this.particleMaxAge = travelDuration + 16 + rand.nextInt(8);
+
         if (rand.nextInt(4) == 0) {
             this.particleRed = 0.6F + rand.nextFloat() * 0.2F;
             this.particleGreen = 0.6F + rand.nextFloat() * 0.3F;
             this.particleBlue = rand.nextFloat() * 0.2F;
+
         } else {
             this.particleRed = 0.1F + rand.nextFloat() * 0.2F;
             this.particleGreen = 0.4F + rand.nextFloat() * 0.3F;
             this.particleBlue = rand.nextFloat() * 0.2F;
         }
+
         this.particleAlpha = 1.0F;
         this.noClip = true;
         this.motionX = 0;
@@ -67,6 +71,7 @@ public class EntityTotemFX extends EntityFX {
                 this.motionX = 0.0;
                 this.motionY = fallVelY;
                 this.motionZ = 0.0;
+
             } else if (travelTick <= travelDuration) {
                 double nx = this.posX * (1.0 - t / n) + targetX * (t / n);
                 double ny = this.posY * (1.0 - t / n) + targetY * (t / n);
@@ -74,6 +79,7 @@ public class EntityTotemFX extends EntityFX {
                 this.motionX = nx - this.posX;
                 this.motionY = ny - this.posY;
                 this.motionZ = nz - this.posZ;
+
             } else {
                 falling = true;
                 fallVelY = -0.08 - rand.nextDouble() * 0.05;
@@ -111,7 +117,9 @@ public class EntityTotemFX extends EntityFX {
         float py = (float)(this.prevPosY + (this.posY - this.prevPosY) * partialTicks - interpPosY);
         float pz = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * partialTicks - interpPosZ);
 
-        int frameIdx = 176 + ((this.particleAge * 8 / this.particleMaxAge) % 8);
+        int animFrameCount = 8;
+        int frameIdx = 176 + (animFrameCount - 1) - (this.particleAge * animFrameCount / this.particleMaxAge);
+        if (frameIdx < 176) frameIdx = 176;
         int uIndex = frameIdx % 16;
         int vIndex = frameIdx / 16;
         float minU = uIndex * 8f / 128f;
@@ -129,16 +137,18 @@ public class EntityTotemFX extends EntityFX {
 
     public static class Provider {
         public static void spawn(World world, double x, double y, double z) {
-            Minecraft mc = Minecraft.getMinecraft();
-            int count = 96;
-            for (int i = 0; i < count; i++) {
-                double theta = 2 * Math.PI * i / count + mc.theWorld.rand.nextDouble() * 0.23;
-                double phi = Math.acos(2.0 * mc.theWorld.rand.nextDouble() - 1.0);
-                double dirX = Math.sin(phi) * Math.cos(theta);
-                double dirY = Math.cos(phi) * 0.45 + 0.22;
-                double dirZ = Math.sin(phi) * Math.sin(theta);
-                mc.effectRenderer.addEffect(new EntityTotemFX(world, x, y + 1.0, z, dirX, dirY, dirZ));
-            }
+            com.inf1nlty.soulmending.client.ParticleSpawnQueue.enqueue(() -> {
+                Minecraft mc = Minecraft.getMinecraft();
+                int count = 96;
+                for (int i = 0; i < count; i++) {
+                    double theta = 2 * Math.PI * i / count + mc.theWorld.rand.nextDouble() * 0.23;
+                    double phi = Math.acos(2.0 * mc.theWorld.rand.nextDouble() - 1.0);
+                    double dirX = Math.sin(phi) * Math.cos(theta);
+                    double dirY = Math.cos(phi) * 0.45 + 0.22;
+                    double dirZ = Math.sin(phi) * Math.sin(theta);
+                    mc.effectRenderer.addEffect(new EntityTotemFX(world, x, y + 1.0, z, dirX, dirY, dirZ));
+                }
+            });
         }
     }
 }

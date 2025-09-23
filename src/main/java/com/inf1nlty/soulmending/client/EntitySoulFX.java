@@ -199,17 +199,19 @@ public class EntitySoulFX extends EntityFX {
 
         int count = 6 + world.rand.nextInt(3);
 
-        for (int i = 0; i < count; i++) {
-            double angle = world.rand.nextDouble() * Math.PI * 2.0;
-            double radius = 0.7 + world.rand.nextDouble() * 1.7;
-            double y = blockY + 0.2 + world.rand.nextDouble() * 0.5;
-            double x = blockX + Math.cos(angle) * radius;
-            double z = blockZ + Math.sin(angle) * radius;
+        ParticleSpawnQueue.enqueue(() -> {
+            for (int i = 0; i < count; i++) {
+                double angle = world.rand.nextDouble() * Math.PI * 2.0;
+                double radius = 0.7 + world.rand.nextDouble() * 1.7;
+                double y = blockY + 0.2 + world.rand.nextDouble() * 0.5;
+                double x = blockX + Math.cos(angle) * radius;
+                double z = blockZ + Math.sin(angle) * radius;
 
-            x += (world.rand.nextDouble() - 0.5) * 0.3;
-            z += (world.rand.nextDouble() - 0.5) * 0.3;
-            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, blockX, targetY, blockZ, true));
-        }
+                x += (world.rand.nextDouble() - 0.5) * 0.3;
+                z += (world.rand.nextDouble() - 0.5) * 0.3;
+                mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, blockX, targetY, blockZ, true));
+            }
+        });
     }
 
     public static void spawnRingToPlayer(World world, double eventX, double eventY, double eventZ) {
@@ -222,15 +224,17 @@ public class EntitySoulFX extends EntityFX {
         if (player == null) return;
 
         int particleCount = 10;
-        for (int i = 0; i < particleCount; i++) {
-            double angle = world.rand.nextDouble() * Math.PI * 2.0;
-            double radius = 1.6 + world.rand.nextDouble() * 0.8;
-            double height = -1.0 + world.rand.nextDouble() * 3.0;
-            double x = player.posX + Math.cos(angle) * radius;
-            double y = player.posY + player.getEyeHeight() + height;
-            double z = player.posZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, player, false));
-        }
+        ParticleSpawnQueue.enqueue(() -> {
+            for (int i = 0; i < particleCount; i++) {
+                double angle = world.rand.nextDouble() * Math.PI * 2.0;
+                double radius = 1.6 + world.rand.nextDouble() * 0.8;
+                double height = -1.0 + world.rand.nextDouble() * 3.0;
+                double x = player.posX + Math.cos(angle) * radius;
+                double y = player.posY + player.getEyeHeight() + height;
+                double z = player.posZ + Math.sin(angle) * radius;
+                mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, player, false));
+            }
+        });
     }
 
     public static void findAndSpawnGatherToItem(World world, double x, double y, double z) {
@@ -268,15 +272,17 @@ public class EntitySoulFX extends EntityFX {
         double targetY = targetEntity.posY + targetEntity.height * 0.5;
         double targetZ = targetEntity.posZ;
 
-        for (int i = 0; i < 8; i++) {
-            double angle = world.rand.nextDouble() * Math.PI * 2.0;
-            double radius = 1.0 + world.rand.nextDouble() * 0.8;
-            double height = world.rand.nextDouble();
-            double x = targetX + Math.cos(angle) * radius;
-            double y = targetY + 0.2 + height * 0.6;
-            double z = targetZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetEntity, false));
-        }
+        ParticleSpawnQueue.enqueue(() -> {
+            for (int i = 0; i < 8; i++) {
+                double angle = world.rand.nextDouble() * Math.PI * 2.0;
+                double radius = 1.0 + world.rand.nextDouble() * 0.8;
+                double height = world.rand.nextDouble();
+                double x = targetX + Math.cos(angle) * radius;
+                double y = targetY + 0.2 + height * 0.6;
+                double z = targetZ + Math.sin(angle) * radius;
+                mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetEntity, false));
+            }
+        });
     }
 
     public static void spawnGatherToBlock(World world, double blockX, double blockY, double blockZ) {
@@ -289,6 +295,7 @@ public class EntitySoulFX extends EntityFX {
         double targetY = blockY + 0.5;
         double targetZ = blockZ + 0.5;
 
+        ParticleSpawnQueue.enqueue(() -> {
         for (int i = 0; i < 8; i++) {
             double angle = world.rand.nextDouble() * Math.PI * 2.0;
             double radius = 0.5 + world.rand.nextDouble() * 0.6;
@@ -298,5 +305,6 @@ public class EntitySoulFX extends EntityFX {
             double z = targetZ + Math.sin(angle) * radius;
             mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetX, targetY, targetZ, false));
         }
+        });
     }
 }
