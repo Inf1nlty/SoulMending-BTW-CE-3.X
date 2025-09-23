@@ -10,6 +10,7 @@
     "entity.EntityCreatureMixin",
     "entity.EntityGhastMixin",
     "entity.EntityItemMixin",
+    "entity.EntityLivingBaseMixin",
     "entity.EntityPlayerMixin",
     "entity.UrnEntitySoulPossessMixin"
   ],

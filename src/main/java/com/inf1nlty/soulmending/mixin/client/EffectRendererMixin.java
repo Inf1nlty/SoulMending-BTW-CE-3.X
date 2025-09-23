@@ -1,5 +1,7 @@
 package com.inf1nlty.soulmending.mixin.client;
 
+import com.inf1nlty.soulmending.client.EntitySoulFX;
+import com.inf1nlty.soulmending.client.EntityTotemFX;
 import com.prupe.mcpatcher.sky.FireworksHelper;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
@@ -46,7 +48,6 @@ public abstract class EffectRendererMixin {
                         renderer.bindTexture(TextureMap.locationItemsTexture);
                         break;
                     case 4:
-                        renderer.bindTexture(new ResourceLocation("soulmending:textures/blocks/soul.png"));
                         break;
                     case 0:
                         renderer.bindTexture(new ResourceLocation("textures/particle/particles.png"));
@@ -60,6 +61,40 @@ public abstract class EffectRendererMixin {
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
                     GL11.glDepthMask(true);
+
+                    Tessellator tessellator = Tessellator.instance;
+                    tessellator.startDrawingQuads();
+
+                    ResourceLocation lastTex = null;
+                    for (EntityFX fx : fxLayers[var8]) {
+
+                        ResourceLocation currentTex;
+
+                        if (fx instanceof EntityTotemFX) {
+
+                            currentTex = new ResourceLocation("soulmending:textures/particle/totem_atlas.png");
+
+                        } else if (fx instanceof EntitySoulFX && ((EntitySoulFX)fx).useSoulAtlas) {
+                            currentTex = new ResourceLocation("soulmending:textures/particle/totem_atlas.png");
+
+                        } else {
+                            currentTex = new ResourceLocation("soulmending:textures/blocks/soul.png");
+                        }
+
+                        if (lastTex == null || !lastTex.equals(currentTex)) {
+                            tessellator.draw();
+                            renderer.bindTexture(currentTex);
+                            tessellator.startDrawingQuads();
+                            lastTex = currentTex;
+                        }
+                        tessellator.setBrightness(fx.getBrightnessForRender(par2));
+                        fx.renderParticle(tessellator, par2, var3, var7, var4, var5, var6);
+                    }
+                    tessellator.draw();
+                    GL11.glDisable(GL11.GL_BLEND);
+                    GL11.glDepthMask(true);
+                    GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+                    continue;
 
                 } else {
                     FireworksHelper.setParticleBlendMethod(var8, 0, true);

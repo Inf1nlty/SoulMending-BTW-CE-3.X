@@ -1,12 +1,11 @@
 package com.inf1nlty.soulmending.util;
 
+import btw.community.soulmending.SoulMendingAddon;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
+import com.inf1nlty.soulmending.client.EntityTotemFX;
 import com.inf1nlty.soulmending.item.EmptySoulTotemItem;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 
 public class InventoryHelper {
 
@@ -101,6 +100,7 @@ public class InventoryHelper {
         if (stack == null) return null;
 
         if (stack.getItem() == SoulMendingBlocks.soulTotemItem) {
+
             int current = SoulTotemItem.getStoredSoul(stack);
             int newSoul = Math.min(current + addSoul, SoulTotemItem.MAX_SOUL);
 
@@ -112,6 +112,7 @@ public class InventoryHelper {
                 return stack;
             }
         }
+
         else if (stack.getItem() == SoulMendingBlocks.emptySoulTotemItem) {
             if (addSoul > 0) {
                 return convertToSoulTotem(stack, addSoul);
@@ -120,5 +121,45 @@ public class InventoryHelper {
         }
 
         return stack;
+    }
+
+    public static boolean trySoulTotemRevive(EntityPlayer player) {
+
+        IInventory inv = player.inventory;
+        int bestIndex = -1;
+        int maxSoul = -1;
+
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+            if (stack != null && stack.getItem() == SoulMendingBlocks.soulTotemItem) {
+                int soul = SoulTotemItem.getStoredSoul(stack);
+                if (soul >= 5000 && soul > maxSoul) {
+                    maxSoul = soul;
+                    bestIndex = i;
+                }
+            }
+        }
+
+        if (bestIndex != -1) {
+            ItemStack stack = inv.getStackInSlot(bestIndex);
+
+            int newSoul = maxSoul - 5000;
+
+            if (newSoul <= 0) {
+                ItemStack empty = InventoryHelper.convertToEmptySoulTotem(stack);
+                inv.setInventorySlotContents(bestIndex, empty);
+
+            } else {
+                SoulTotemItem.setStoredSoul(stack, newSoul);
+            }
+
+            player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 20*5, 1)); // Absorption 2，5 seconds
+            player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 20*5, 1)); // Regeneration 2, 5 seconds
+            player.worldObj.playSoundAtEntity(player, SoulMendingAddon.SOULMENDING_TOTEM_USE.sound(), 1.0F, 1.0F);
+            EntityTotemFX.Provider.spawn(player.worldObj, player.posX, player.posY + 1.0, player.posZ);
+            return true;
+        }
+
+        return false;
     }
 }

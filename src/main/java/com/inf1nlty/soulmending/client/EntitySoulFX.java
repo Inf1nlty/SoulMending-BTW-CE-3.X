@@ -11,9 +11,22 @@ public class EntitySoulFX extends EntityFX {
     private final double theta0, r0, yOffset0, omega;
     private final int spiralTurns;
     private final double verticalCurve;
+    public final boolean useSoulAtlas;
+    public final int atlasIndex;
+    private final float colorBase;
 
-    public EntitySoulFX(World world, double x, double y, double z, double targetX, double targetY, double targetZ) {
+    public EntitySoulFX(World world, double x, double y, double z, double targetX, double targetY, double targetZ, boolean useSoulAtlas) {
         super(world, x, y, z, 0, 0, 0);
+        this.useSoulAtlas = useSoulAtlas;
+
+        if(useSoulAtlas) {
+            this.atlasIndex = world.rand.nextInt(16);
+            this.colorBase = 0.5F - world.rand.nextFloat();
+        } else {
+            this.atlasIndex = 0;
+            this.colorBase = 0.0F;
+        }
+
         this.centerX = targetX;
         this.centerY = targetY;
         this.centerZ = targetZ;
@@ -35,8 +48,18 @@ public class EntitySoulFX extends EntityFX {
         this.particleAlpha = 0.92F + rand.nextFloat() * 0.07F;
     }
 
-    public EntitySoulFX(World world, double x, double y, double z, Entity targetEntity) {
+    public EntitySoulFX(World world, double x, double y, double z, Entity targetEntity, boolean useSoulAtlas) {
         super(world, x, y, z, 0, 0, 0);
+        this.useSoulAtlas = useSoulAtlas;
+
+        if(useSoulAtlas) {
+            this.atlasIndex = world.rand.nextInt(16);
+            this.colorBase = 0.5F - world.rand.nextFloat();
+        } else {
+            this.atlasIndex = 0;
+            this.colorBase = 0.0F;
+        }
+
         this.centerX = targetEntity.posX;
         this.centerY = targetEntity.posY + targetEntity.getEyeHeight() * 0.2;
         this.centerZ = targetEntity.posZ;
@@ -63,6 +86,13 @@ public class EntitySoulFX extends EntityFX {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
+
+        if (useSoulAtlas) {
+            float t = colorBase + (float)this.particleAge / (float)this.particleMaxAge;
+            this.particleRed   = (float)Math.pow(Math.sin(Math.PI * (t + 0.0f / 3.0f)), 2);
+            this.particleGreen = (float)Math.pow(Math.sin(Math.PI * (t + 1.0f / 3.0f)), 2);
+            this.particleBlue  = (float)Math.pow(Math.sin(Math.PI * (t + 2.0f / 3.0f)), 2);
+        }
 
         double cx = centerX, cy = centerY, cz = centerZ;
         double r = r0, theta = theta0, yOffset = yOffset0;
@@ -123,6 +153,11 @@ public class EntitySoulFX extends EntityFX {
     public void renderParticle(Tessellator tessellator, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 //        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("soulmending:textures/blocks/soul.png"));
         float scale = this.particleScale;
+
+        if (useSoulAtlas) {
+            scale *= 0.25F;
+        }
+
         double interpPosX = Minecraft.getMinecraft().renderViewEntity.prevPosX +
                 (Minecraft.getMinecraft().renderViewEntity.posX - Minecraft.getMinecraft().renderViewEntity.prevPosX) * partialTicks;
         double interpPosY = Minecraft.getMinecraft().renderViewEntity.prevPosY +
@@ -135,6 +170,16 @@ public class EntitySoulFX extends EntityFX {
         float pz = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * partialTicks - interpPosZ);
 
         float minU = 0.0F, maxU = 1.0F, minV = 0.0F, maxV = 1.0F;
+
+        if(useSoulAtlas) {
+            int texIndex = 224 + atlasIndex; // 224~239
+            int uIndex = texIndex % 16;
+            int vIndex = texIndex / 16;
+            minU = uIndex / 16.0F;
+            maxU = minU + 1.0F / 16.0F;
+            minV = vIndex / 16.0F;
+            maxV = minV + 1.0F / 16.0F;
+        }
 
         tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
 
@@ -152,13 +197,18 @@ public class EntitySoulFX extends EntityFX {
 
         double targetY = blockY + 1.5;
 
-        for (int i = 0; i < 3; i++) {
+        int count = 6 + world.rand.nextInt(3);
+
+        for (int i = 0; i < count; i++) {
             double angle = world.rand.nextDouble() * Math.PI * 2.0;
-            double radius = 0.35 + world.rand.nextDouble() * 0.3;
-            double x = blockX + Math.cos(angle) * radius;
+            double radius = 0.7 + world.rand.nextDouble() * 1.7;
             double y = blockY + 0.2 + world.rand.nextDouble() * 0.5;
+            double x = blockX + Math.cos(angle) * radius;
             double z = blockZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, blockX, targetY, blockZ));
+
+            x += (world.rand.nextDouble() - 0.5) * 0.3;
+            z += (world.rand.nextDouble() - 0.5) * 0.3;
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, blockX, targetY, blockZ, true));
         }
     }
 
@@ -179,7 +229,7 @@ public class EntitySoulFX extends EntityFX {
             double x = player.posX + Math.cos(angle) * radius;
             double y = player.posY + player.getEyeHeight() + height;
             double z = player.posZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, player));
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, player, false));
         }
     }
 
@@ -225,7 +275,7 @@ public class EntitySoulFX extends EntityFX {
             double x = targetX + Math.cos(angle) * radius;
             double y = targetY + 0.2 + height * 0.6;
             double z = targetZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetEntity));
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetEntity, false));
         }
     }
 
@@ -246,7 +296,7 @@ public class EntitySoulFX extends EntityFX {
             double x = targetX + Math.cos(angle) * radius;
             double y = blockY + 0.2 + height * 0.6;
             double z = targetZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetX, targetY, targetZ));
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetX, targetY, targetZ, false));
         }
     }
 }

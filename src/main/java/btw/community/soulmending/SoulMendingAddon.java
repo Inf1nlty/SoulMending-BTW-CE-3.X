@@ -2,6 +2,7 @@ package btw.community.soulmending;
 
 import btw.BTWAddon;
 import btw.AddonHandler;
+import btw.util.sounds.AddonSoundRegistryEntry;
 import com.inf1nlty.soulmending.EnchantmentSoulMending;
 import com.inf1nlty.soulmending.SoulMendingConfig;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
@@ -12,6 +13,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class SoulMendingAddon extends BTWAddon {
+
+    public static final AddonSoundRegistryEntry SOULMENDING_TOTEM_USE = new AddonSoundRegistryEntry("soulmending:totem_use");
+
     @Override
     public void initialize() {
         AddonHandler.logMessage(getName() + " v" + getVersionString() + " Initializing...");

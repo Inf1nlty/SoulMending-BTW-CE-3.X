@@ -14,6 +14,11 @@ import java.util.Random;
 @Mixin(EntityPlayer.class)
 public abstract class EntityPlayerMixin implements ISoulPossessable {
 
+    public void soulMending$onSoulPossession() {
+        EntityPlayer self = (EntityPlayer)(Object)this;
+        InventoryHelper.addSoulToBestTotem(self.inventory, self.worldObj, (int)self.posX, (int)self.posY, (int)self.posZ, 10);
+    }
+
     @Inject(method = "onLivingUpdate", at = @At("HEAD"))
     private void soulmending$netherAirPossession(CallbackInfo ci) {
         EntityPlayer self = (EntityPlayer) (Object) this;
@@ -24,10 +29,5 @@ public abstract class EntityPlayerMixin implements ISoulPossessable {
                 this.soulMending$onSoulPossession();
             }
         }
-    }
-
-    public void soulMending$onSoulPossession() {
-        EntityPlayer self = (EntityPlayer)(Object)this;
-        InventoryHelper.addSoulToBestTotem(self.inventory, self.worldObj, (int)self.posX, (int)self.posY, (int)self.posZ, 10);
     }
 }
