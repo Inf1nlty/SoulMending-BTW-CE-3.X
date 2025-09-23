@@ -23,7 +23,7 @@ public class EntitySoulFX extends EntityFX {
         this.theta0 = Math.atan2(z - targetZ, x - targetX);
         this.yOffset0 = y - targetY;
         this.spiralTurns = 2 + rand.nextInt(2);
-        this.omega = spiralTurns;
+        this.omega = 0.33 * spiralTurns;
         this.verticalCurve = 0.5 + rand.nextDouble() * 0.2;
 
         this.particleMaxAge = 56 + rand.nextInt(16);
@@ -116,12 +116,12 @@ public class EntitySoulFX extends EntityFX {
 
     @Override
     public int getFXLayer() {
-        return 0;
+        return 4; // Use 4 to indicate custom rendering, vanilla particles usually return 0
     }
 
     @Override
     public void renderParticle(Tessellator tessellator, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("soulmending:textures/blocks/soul.png"));
+//        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("soulmending:textures/blocks/soul.png"));
         float scale = this.particleScale;
         double interpPosX = Minecraft.getMinecraft().renderViewEntity.prevPosX +
                 (Minecraft.getMinecraft().renderViewEntity.posX - Minecraft.getMinecraft().renderViewEntity.prevPosX) * partialTicks;
@@ -171,11 +171,11 @@ public class EntitySoulFX extends EntityFX {
         EntityPlayer player = mc.theWorld.getClosestPlayer(eventX + 0.5, eventY, eventZ + 0.5, 2.5);
         if (player == null) return;
 
-        int particleCount = 16;
+        int particleCount = 10;
         for (int i = 0; i < particleCount; i++) {
             double angle = world.rand.nextDouble() * Math.PI * 2.0;
-            double radius = 1.1 + world.rand.nextDouble() * 0.5;
-            double height = -0.5 + world.rand.nextDouble() * 2.0;
+            double radius = 1.6 + world.rand.nextDouble() * 0.8;
+            double height = -1.0 + world.rand.nextDouble() * 3.0;
             double x = player.posX + Math.cos(angle) * radius;
             double y = player.posY + player.getEyeHeight() + height;
             double z = player.posZ + Math.sin(angle) * radius;

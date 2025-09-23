@@ -2,3 +2,5 @@ accessWidener v1 named
 accessible field net/minecraft/src/Enchantment canBeAppliedByVanillaEnchanter Z
 accessible field btw/block/tileentity/HopperTileEntity containedSoulCount I
 accessible field btw/block/tileentity/HopperTileEntity filterItemID I
+accessible field net/minecraft/src/EffectRenderer renderer Lnet/minecraft/src/TextureManager;
+accessible field net/minecraft/src/EffectRenderer fxLayers [Ljava/util/List;
