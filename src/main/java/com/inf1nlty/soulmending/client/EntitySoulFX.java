@@ -3,84 +3,115 @@ package com.inf1nlty.soulmending.client;
 import com.inf1nlty.soulmending.SoulMendingConfig;
 import net.minecraft.src.*;
 
-public class EntityFXSoul extends EntityFX {
-    private final double targetX, targetY, targetZ;
-    private final float initScale;
+public class EntitySoulFX extends EntityFX {
+    private final double centerX, centerY, centerZ;
+    private final float portalParticleScale;
     private final Entity targetEntity;
 
-    public EntityFXSoul(World world, double x, double y, double z, double targetX, double targetY, double targetZ) {
+    private final double theta0, r0, yOffset0, omega;
+    private final int spiralTurns;
+    private final double verticalCurve;
+
+    public EntitySoulFX(World world, double x, double y, double z, double targetX, double targetY, double targetZ) {
         super(world, x, y, z, 0, 0, 0);
-        this.targetX = targetX;
-        this.targetY = targetY;
-        this.targetZ = targetZ;
+        this.centerX = targetX;
+        this.centerY = targetY;
+        this.centerZ = targetZ;
         this.targetEntity = null;
 
-        double dx = targetX - x;
-        double dy = targetY - y;
-        double dz = targetZ - z;
-        double len = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        this.r0 = Math.sqrt((x - targetX)*(x - targetX) + (z - targetZ)*(z - targetZ));
+        this.theta0 = Math.atan2(z - targetZ, x - targetX);
+        this.yOffset0 = y - targetY;
+        this.spiralTurns = 2 + rand.nextInt(2);
+        this.omega = spiralTurns;
+        this.verticalCurve = 0.5 + rand.nextDouble() * 0.2;
 
-        if (len > 0) {
-            double speed = 0.01 + rand.nextFloat() * 0.01;
-            motionX = dx / len * speed;
-            motionY = dy / len * speed;
-            motionZ = dz / len * speed;
-        }
-
-        this.particleMaxAge = 30 + rand.nextInt(8);
-        this.particleScale = this.initScale = 0.20F + rand.nextFloat() * 0.1F;
+        this.particleMaxAge = 56 + rand.nextInt(16);
+        this.portalParticleScale = this.particleScale = 0.18F + rand.nextFloat() * 0.08F;
         this.noClip = true;
-
-        this.particleRed = 1.0F;
-        this.particleGreen = 1.0F;
+        this.particleRed = 0.70F + rand.nextFloat() * 0.3F;
+        this.particleGreen = 0.8F + rand.nextFloat() * 0.15F;
         this.particleBlue = 1.0F;
-        this.particleAlpha = 0.95F;
+        this.particleAlpha = 0.92F + rand.nextFloat() * 0.07F;
     }
 
-    public EntityFXSoul(World world, double x, double y, double z, Entity targetEntity) {
+    public EntitySoulFX(World world, double x, double y, double z, Entity targetEntity) {
         super(world, x, y, z, 0, 0, 0);
-        this.targetX = 0;
-        this.targetY = 0;
-        this.targetZ = 0;
+        this.centerX = targetEntity.posX;
+        this.centerY = targetEntity.posY + targetEntity.getEyeHeight() * 0.2;
+        this.centerZ = targetEntity.posZ;
         this.targetEntity = targetEntity;
-        this.initScale = this.particleScale = 0.20F + rand.nextFloat() * 0.1F;
-        this.particleMaxAge = 30 + rand.nextInt(8);
+
+        this.r0 = Math.sqrt((x - centerX)*(x - centerX) + (z - centerZ)*(z - centerZ));
+        this.theta0 = Math.atan2(z - centerZ, x - centerX);
+        this.yOffset0 = y - centerY;
+
+        this.spiralTurns = 2 + rand.nextInt(2);
+        this.omega = spiralTurns;
+        this.verticalCurve = 0.5 + rand.nextDouble() * 0.2;
+        this.particleMaxAge = 36 + rand.nextInt(8);
+        this.portalParticleScale = this.particleScale = 0.18F + rand.nextFloat() * 0.08F;
         this.noClip = true;
-        this.particleRed = 1.0F;
-        this.particleGreen = 1.0F;
+        this.particleRed = 0.70F + rand.nextFloat() * 0.3F;
+        this.particleGreen = 0.8F + rand.nextFloat() * 0.15F;
         this.particleBlue = 1.0F;
-        this.particleAlpha = 0.95F;
+        this.particleAlpha = 0.92F + rand.nextFloat() * 0.07F;
     }
 
     @Override
     public void onUpdate() {
-        super.onUpdate();
-        double dx, dy, dz;
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
 
+        double cx = centerX, cy = centerY, cz = centerZ;
+        double r = r0, theta = theta0, yOffset = yOffset0;
         if (targetEntity != null && !targetEntity.isDead) {
-            dx = targetEntity.posX - posX;
-            dy = (targetEntity.posY + targetEntity.getEyeHeight()) - posY;
-            dz = targetEntity.posZ - posZ;
+            cx = targetEntity.posX;
+            cy = targetEntity.posY + targetEntity.getEyeHeight()*0.2;
+            cz = targetEntity.posZ;
 
-        } else {
-            dx = targetX - posX;
-            dy = targetY - posY;
-            dz = targetZ - posZ;
+            if (this.particleAge == 0) {
+                r = Math.sqrt((this.posX - cx)*(this.posX - cx) + (this.posZ - cz)*(this.posZ - cz));
+                theta = Math.atan2(this.posZ - cz, this.posX - cx);
+                yOffset = this.posY - cy;
+            }
         }
 
-        double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (dist < 0.15) {
+        float t = (float)this.particleAge / (float)this.particleMaxAge;
+
+        double spiralStrength = 1.0;
+        double rNow = r * Math.pow(1 - t, spiralStrength);
+        double thetaNow = theta + omega * t * 2 * Math.PI;
+        double yNow = cy + yOffset * (1 - t) + verticalCurve * Math.sin(t * Math.PI) - 0.15D;
+
+        this.posX = cx + rNow * Math.cos(thetaNow);
+        this.posY = yNow;
+        this.posZ = cz + rNow * Math.sin(thetaNow);
+
+        double destX, destY, destZ;
+        destX = cx;
+        destY = cy;
+        destZ = cz;
+        double dist = Math.sqrt(
+                (this.posX - destX) * (this.posX - destX) +
+                        (this.posY - destY) * (this.posY - destY) +
+                        (this.posZ - destZ) * (this.posZ - destZ));
+
+        if (dist < 0.25) {
             setDead();
             return;
         }
 
-        this.particleScale = (float) (this.initScale * (0.6 + dist * 0.4));
-        motionX += dx * 0.005;
-        motionY += dy * 0.005;
-        motionZ += dz * 0.005;
-        motionX *= 0.95;
-        motionY *= 0.95;
-        motionZ *= 0.95;
+        float ageScale = ((float)this.particleAge) / (float)this.particleMaxAge;
+        ageScale = 1.0F - ageScale;
+        ageScale *= ageScale;
+        ageScale = 1.0F - ageScale;
+        this.particleScale = this.portalParticleScale * ageScale;
+
+        if (++this.particleAge >= this.particleMaxAge) {
+            setDead();
+        }
     }
 
     @Override
@@ -91,9 +122,7 @@ public class EntityFXSoul extends EntityFX {
     @Override
     public void renderParticle(Tessellator tessellator, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("soulmending:textures/blocks/soul.png"));
-
-        float scale = this.particleScale * (1F - ((float)this.particleAge + partialTicks) / (float)this.particleMaxAge);
-
+        float scale = this.particleScale;
         double interpPosX = Minecraft.getMinecraft().renderViewEntity.prevPosX +
                 (Minecraft.getMinecraft().renderViewEntity.posX - Minecraft.getMinecraft().renderViewEntity.prevPosX) * partialTicks;
         double interpPosY = Minecraft.getMinecraft().renderViewEntity.prevPosY +
@@ -129,7 +158,7 @@ public class EntityFXSoul extends EntityFX {
             double x = blockX + Math.cos(angle) * radius;
             double y = blockY + 0.2 + world.rand.nextDouble() * 0.5;
             double z = blockZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntityFXSoul(world, x, y, z, blockX, targetY, blockZ));
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, blockX, targetY, blockZ));
         }
     }
 
@@ -150,7 +179,7 @@ public class EntityFXSoul extends EntityFX {
             double x = player.posX + Math.cos(angle) * radius;
             double y = player.posY + player.getEyeHeight() + height;
             double z = player.posZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntityFXSoul(world, x, y, z, player));
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, player));
         }
     }
 
@@ -196,7 +225,7 @@ public class EntityFXSoul extends EntityFX {
             double x = targetX + Math.cos(angle) * radius;
             double y = targetY + 0.2 + height * 0.6;
             double z = targetZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntityFXSoul(world, x, y, z, targetEntity));
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetEntity));
         }
     }
 
@@ -217,7 +246,7 @@ public class EntityFXSoul extends EntityFX {
             double x = targetX + Math.cos(angle) * radius;
             double y = blockY + 0.2 + height * 0.6;
             double z = targetZ + Math.sin(angle) * radius;
-            mc.effectRenderer.addEffect(new EntityFXSoul(world, x, y, z, targetX, targetY, targetZ));
+            mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, targetX, targetY, targetZ));
         }
     }
 }

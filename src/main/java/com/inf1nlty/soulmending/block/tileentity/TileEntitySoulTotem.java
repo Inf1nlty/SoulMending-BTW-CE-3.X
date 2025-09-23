@@ -3,7 +3,7 @@ package com.inf1nlty.soulmending.block.tileentity;
 import btw.block.tileentity.TileEntityDataPacketHandler;
 import com.inf1nlty.soulmending.EnchantmentSoulMending;
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
-import com.inf1nlty.soulmending.client.EntityFXSoul;
+import com.inf1nlty.soulmending.client.EntitySoulFX;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
 import com.inf1nlty.soulmending.util.SoulMendingHelper;
 import com.inf1nlty.soulmending.util.ISoulPossessable;
@@ -54,7 +54,7 @@ public class TileEntitySoulTotem extends TileEntity implements IInventory, TileE
 
                 if (particleCooldown <= 0) {
                     if (worldObj.isRemote) {
-                        EntityFXSoul.spawnRing(worldObj, xCoord + 0.5, yCoord, zCoord + 0.5);
+                        EntitySoulFX.spawnRing(worldObj, xCoord + 0.5, yCoord, zCoord + 0.5);
                     }
                     worldObj.playAuxSFX(2286, xCoord, yCoord, zCoord, 10000);
                     particleCooldown = cooldownTicks;

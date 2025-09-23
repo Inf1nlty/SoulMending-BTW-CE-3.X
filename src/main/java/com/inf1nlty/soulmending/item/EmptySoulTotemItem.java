@@ -61,6 +61,11 @@ public class EmptySoulTotemItem extends SMItem {
             return false;
 
         int facing = MiscUtils.convertPlacingEntityOrientationToBlockFacingReversed(player);
+
+        if (facing == 0 || facing == 1) {
+            facing = MiscUtils.convertOrientationToFlatBlockFacingReversed(player);
+        }
+
         world.setBlock(placeX, placeY, placeZ, SoulMendingBlocks.emptySoulTotem.blockID, facing, 3);
         TileEntity te = world.getBlockTileEntity(placeX, placeY, placeZ);
 

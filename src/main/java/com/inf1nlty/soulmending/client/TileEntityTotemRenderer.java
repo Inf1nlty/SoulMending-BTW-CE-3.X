@@ -246,7 +246,7 @@ public class TileEntityTotemRenderer extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
-        
+
         for (int i = 0; i < ELEMENT_COORDS.length; i++) {
             double[] coords = ELEMENT_COORDS[i];
             float[][] uvs = ELEMENT_UVS[i];

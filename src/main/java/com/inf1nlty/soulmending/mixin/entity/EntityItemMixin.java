@@ -1,6 +1,7 @@
 package com.inf1nlty.soulmending.mixin.entity;
 
 import com.inf1nlty.soulmending.block.SoulMendingBlocks;
+import com.inf1nlty.soulmending.item.SoulTotemItem;
 import com.inf1nlty.soulmending.util.InventoryHelper;
 import com.inf1nlty.soulmending.util.ISoulPossessable;
 import net.minecraft.src.DamageSource;
@@ -40,10 +41,13 @@ public abstract class EntityItemMixin implements ISoulPossessable {
             return;
         }
 
+        int before = SoulTotemItem.getStoredSoul(original);
         ItemStack result = InventoryHelper.addSoulToStack(original, 10);
-        if (result != original) {
+        int after = SoulTotemItem.getStoredSoul(result);
+
+        if (after > before || result != original) {
             self.setEntityItemStack(result);
+            self.worldObj.playAuxSFX(2286, (int)self.posX, (int)self.posY, (int)self.posZ, 10010);
         }
-        self.worldObj.playAuxSFX(2286, (int)self.posX, (int)self.posY, (int)self.posZ, 10010);
     }
 }

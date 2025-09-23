@@ -1,5 +1,6 @@
 package com.inf1nlty.soulmending.block;
 
+import btw.block.util.RayTraceUtils;
 import com.inf1nlty.soulmending.block.tileentity.TileEntitySoulTotem;
 import com.inf1nlty.soulmending.item.SoulTotemItem;
 import com.inf1nlty.soulmending.util.InventoryHelper;
@@ -134,5 +135,14 @@ public class BlockSoulTotem extends BlockContainer {
     @SuppressWarnings("deprecation")
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         this.setBlockBounds(0.1875F, 0.0F, 0.25F, 0.8125F, 1.0F, 0.75F);
+    }
+
+    @Override
+    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
+        RayTraceUtils rayTrace = new RayTraceUtils(world, x, y, z, start, end);
+        rayTrace.addBoxWithLocalCoordsToIntersectionList(
+                0.1875, 0.0, 0.25,
+                0.8125, 1.0, 0.75);
+        return rayTrace.getFirstIntersection();
     }
 }

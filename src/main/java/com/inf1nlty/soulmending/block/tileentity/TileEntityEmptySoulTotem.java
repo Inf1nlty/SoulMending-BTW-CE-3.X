@@ -43,7 +43,8 @@ public class TileEntityEmptySoulTotem extends TileEntity implements TileEntityDa
     public void transformToSoulTotem(int soul) {
         if (soul > 0 && worldObj != null && !worldObj.isRemote) {
             this.suppressNextDrop();
-            worldObj.setBlock(xCoord, yCoord, zCoord, SoulMendingBlocks.soulTotem.blockID, 0, 3);
+            int oldFacing = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+            worldObj.setBlock(xCoord, yCoord, zCoord, SoulMendingBlocks.soulTotem.blockID, oldFacing, 3);
             TileEntity te = worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
 
             if (te instanceof TileEntitySoulTotem) {
