@@ -1,33 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "soulmending",
+  "id": "soultotem",
   "version": "${version}",
-  "name": "Soul Mending",
+  "name": "Soul Totem",
   "description": "Adds Soul Mending, equipment auto-repair via soul possession. Designed for Better Than Wolves Community Edition.",
   "authors": [
     "Inf1nlty"
   ],
   "contact": {
-    "homepage": "https://github.com/Inf1nlty/SoulMending-BTW-CE-3.X",
-    "sources": "https://github.com/Inf1nlty/SoulMending-BTW-CE-3.X/"
+    "homepage": "https://github.com/Inf1nlty/SoulTotem-BTW-CE-3.X",
+    "sources": "https://github.com/Inf1nlty/SoulTotem-BTW-CE-3.X/"
   },
   "license": "MIT",
-  "icon": "assets/soulmending/icon.png",
+  "icon": "assets/soultotem/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
     ],
     "btw:addon": [
-      "btw.community.soulmending.SoulMendingAddon"
+      "btw.community.soultotem.SoulTotemAddon"
     ]
   },
   "custom": {
     "btw:addon_prefix": "SM"
   },
   "mixins": [
-    "soulmending.mixins.json"
+    "soultotem.mixins.json"
   ],
-  "accessWidener" : "soulmending.accessWidener",
+  "accessWidener" : "soultotem.accessWidener",
   "depends": {
     "fabricloader": ">=0.14.19",
     "minecraft": "1.6.4"

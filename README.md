@@ -1,4 +1,4 @@
-# Soul Mending for Better Than Wolves Community Edition (3.x)
+# Soul Totem for Better Than Wolves Community Edition (3.x)
 
 This mod adds Soul Mending to Better Than Wolves Community Edition, enabling enchanted equipment to be automatically repaired via soul possession events.  
 Designed to enhance survival and automation with unique interactions between souls, blocks, and entities!

@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.inf1nlty.soultotem.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "block.BlockDispenserBlockMixin",
+    "block.BlockPortalSoulPossessMixin",
+    "block.HopperTileEntitySoulPossessMixin",
+    "entity.EntityCreatureMixin",
+    "entity.EntityGhastMixin",
+    "entity.EntityItemMixin",
+    "entity.EntityLivingBaseMixin",
+    "entity.EntityPlayerMixin",
+    "entity.UrnEntitySoulPossessMixin"
+  ],
+  "client": [
+    "client.BTWEffectManagerMixin",
+    "client.EffectRendererMixin",
+    "client.GuiContainerMixin",
+    "client.GuiIngameMixin",
+    "client.GuiVideoSettingsMixin",
+    "client.RenderBlocksMixin",
+    "client.RenderItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
