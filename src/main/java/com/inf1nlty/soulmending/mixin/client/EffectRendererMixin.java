@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 
-@Mixin(value = EffectRenderer.class, remap = false)
+@Mixin(EffectRenderer.class)
 public abstract class EffectRendererMixin {
 
     @Shadow public TextureManager renderer;
