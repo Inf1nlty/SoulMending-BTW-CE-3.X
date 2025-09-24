@@ -16,12 +16,12 @@ public class STBlocks {
 
     public static void initSoulMendingBlocks() {
 
-        soulTotem = new BlockSoulTotem(3702);
-        soulTotemItem = new SoulTotemItem(3703);
+        soulTotem = new BlockSoulTotem(3902);
+        soulTotemItem = new SoulTotemItem(3903);
         TileEntity.addMapping(TileEntitySoulTotem.class, "soultotem:soul_totem");
 
-        emptySoulTotem = new BlockEmptySoulTotem(3704);
-        emptySoulTotemItem = new EmptySoulTotemItem(3705);
+        emptySoulTotem = new BlockEmptySoulTotem(3904);
+        emptySoulTotemItem = new EmptySoulTotemItem(3905);
         TileEntity.addMapping(TileEntityEmptySoulTotem.class, "soultotem:empty_soul_totem");
 
     }

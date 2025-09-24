@@ -8,7 +8,7 @@ public class STItems {
 
     public static void initSMItems() {
 
-        soul_eye = new SoulEyeItem(3701);
+        soul_eye = new SoulEyeItem(3901);
 
     }
 }
