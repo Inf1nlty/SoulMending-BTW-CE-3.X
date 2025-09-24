@@ -3,7 +3,7 @@
   "id": "soultotem",
   "version": "${version}",
   "name": "Soul Totem",
-  "description": "Adds Soul Mending, equipment auto-repair via soul possession. Designed for Better Than Wolves Community Edition.",
+  "description": "Adds Soul Totems and the Soul Mending enchantment to Better Than Wolves CE 3.x. Soul Totems store souls, protect from death, and can auto-repair equipment when enchanted.",
   "authors": [
     "Inf1nlty"
   ],
