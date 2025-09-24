@@ -27,13 +27,16 @@ public class STInit {
                         "UEU",
                         "EOE",
                         "UEU",
-                        'U', new ItemStack(BTWItems.soulUrn, 1, 4), 'E', new ItemStack(Item.emerald, 1, 4), 'O', new ItemStack(BTWItems.ocularOfEnder)});
+                        'U', new ItemStack(BTWItems.soulUrn, 1), 'E', new ItemStack(Item.emerald, 1), 'O', new ItemStack(BTWItems.ocularOfEnder)});
+
+
+        ItemStack emptyTotem = new ItemStack(STBlocks.soulTotemItem);
 
         ItemStack fullTotem = new ItemStack(STBlocks.soulTotemItem);
         SoulTotemItem.setStoredSoul(fullTotem, SoulTotemItem.MAX_SOUL);
 
         RecipeManager.addRecipe(
-                fullTotem,
+                emptyTotem,
                 new Object[]{
                         "SGS",
                         "GNG",
