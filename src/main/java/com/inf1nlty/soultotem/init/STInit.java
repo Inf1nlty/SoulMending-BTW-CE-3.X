@@ -7,6 +7,8 @@ import btw.item.BTWItems;
 import btw.block.BTWBlocks;
 import com.inf1nlty.soultotem.STEnchantments;
 import com.inf1nlty.soultotem.block.STBlocks;
+import net.minecraft.src.Enchantment;
+import net.minecraft.src.EntityVillager;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import com.inf1nlty.soultotem.item.STItems;
@@ -46,17 +48,38 @@ public class STInit {
 
     private static void addPriestTrades(){
 
+        EntityVillager.removeCustomTrade(2,
+                TradeProvider.getBuilder()
+                        .name("btw:sell_fortune_scroll")
+                        .profession(2)
+                        .level(5)
+                        .arcaneScroll()
+                        .scrollEnchant(Enchantment.fortune)
+                        .secondaryEmeraldCost(48, 64)
+                        .mandatory()
+                        .build()
+        );
+
+        TradeProvider.getBuilder()
+                .name("btw:sell_fortune_scroll")
+                .profession(2)
+                .level(5)
+                .arcaneScroll()
+                .scrollEnchant(Enchantment.fortune)
+                .secondaryEmeraldCost(48, 64)
+                .mandatory()
+                .condition(villager -> villager.getRNG().nextFloat() < 0.5f)
+                .addToTradeList();
+
         TradeProvider.getBuilder()
                 .name("stPriestSoulMendingScroll")
                 .profession(2)
                 .level(5)
-                .convert()
-                .input(TradeItem.fromID(Item.paper.itemID))
-                .secondInput(TradeItem.fromID(Item.emerald.itemID, 32, 64))
-                .output(TradeItem.fromIDAndMetadata(BTWItems.arcaneScroll.itemID, STEnchantments.SOUL_MENDING_ID))
-                .weight(0.25f)
-                // 100% chance
-//                .mandatory()
+                .arcaneScroll()
+                .scrollEnchant(STEnchantments.soulMending)
+                .secondaryEmeraldCost(32, 64)
+                .mandatory()
+                .condition(villager -> villager.getRNG().nextFloat() >= 0.5f)
                 .addToTradeList();
     }
 }
