@@ -9,6 +9,7 @@ import com.inf1nlty.soultotem.block.STBlocks;
 import com.inf1nlty.soultotem.client.TileEntityTotemRenderer;
 import com.inf1nlty.soultotem.init.STInit;
 import com.inf1nlty.soultotem.item.STItems;
+import com.inf1nlty.soultotem.network.TotemCDNet;
 import com.inf1nlty.soultotem.network.TotemParticleNet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -29,6 +30,7 @@ public class SoulTotemAddon extends BTWAddon {
         STConfig.load();
 
         TotemParticleNet.register(this);
+        TotemCDNet.register(this);
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             TileEntityTotemRenderer.registerTotemTESR();

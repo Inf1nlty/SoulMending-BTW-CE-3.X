@@ -4,15 +4,16 @@
   "package": "com.inf1nlty.soultotem.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "block.BlockDispenserBlockMixin",
-    "block.BlockPortalSoulPossessMixin",
-    "block.HopperTileEntitySoulPossessMixin",
-    "entity.EntityCreatureMixin",
-    "entity.EntityGhastMixin",
-    "entity.EntityItemMixin",
-    "entity.EntityLivingBaseMixin",
-    "entity.EntityPlayerMixin",
-    "entity.UrnEntitySoulPossessMixin"
+    "world.MinecraftServerMixin",
+    "world.block.BlockDispenserBlockMixin",
+    "world.block.BlockPortalSoulPossessMixin",
+    "world.block.HopperTileEntitySoulPossessMixin",
+    "world.entity.EntityCreatureMixin",
+    "world.entity.EntityGhastMixin",
+    "world.entity.EntityItemMixin",
+    "world.entity.EntityLivingBaseMixin",
+    "world.entity.EntityPlayerMixin",
+    "world.entity.UrnEntitySoulPossessMixin"
   ],
   "client": [
     "client.BTWEffectManagerMixin",

@@ -22,12 +22,12 @@ public class STInit {
     private static void addCraftingRecipes() {
 
         RecipeManager.addRecipe(
-                new ItemStack(STItems.soul_emerald, 4),
+                new ItemStack(STItems.soul_eye, 1),
                 new Object[]{
-                        "LEL",
-                        "EUE",
-                        "LEL",
-                        'L', new ItemStack(Item.dyePowder, 1, 4), 'E', new ItemStack(Item.emerald, 1, 4), 'U', new ItemStack(BTWItems.soulUrn)});
+                        "UEU",
+                        "EOE",
+                        "UEU",
+                        'U', new ItemStack(BTWItems.soulUrn, 1, 4), 'E', new ItemStack(Item.emerald, 1, 4), 'O', new ItemStack(BTWItems.ocularOfEnder)});
 
         ItemStack fullTotem = new ItemStack(STBlocks.soulTotemItem);
         SoulTotemItem.setStoredSoul(fullTotem, SoulTotemItem.MAX_SOUL);
@@ -38,7 +38,7 @@ public class STInit {
                         "SGS",
                         "GNG",
                         "CGC",
-                        'S', STItems.soul_emerald, 'G', Item.ingotGold, 'N', Item.netherStar, 'C', new ItemStack(BTWBlocks.companionCube, 1, 8)});
+                        'S', STItems.soul_eye, 'G', Item.ingotGold, 'N', Item.netherStar, 'C', new ItemStack(BTWBlocks.companionCube, 1, 8)});
     }
 
     private static void addPriestTrades(){

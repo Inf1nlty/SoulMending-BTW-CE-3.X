@@ -1,4 +1,4 @@
-package com.inf1nlty.soultotem.mixin.entity;
+package com.inf1nlty.soultotem.mixin.world.entity;
 
 import btw.item.BTWItems;
 import com.inf1nlty.soultotem.STEnchantments;

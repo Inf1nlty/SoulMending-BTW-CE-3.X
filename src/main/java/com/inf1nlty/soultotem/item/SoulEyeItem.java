@@ -2,13 +2,13 @@ package com.inf1nlty.soultotem.item;
 
 import net.minecraft.src.ItemStack;
 
-public class SoulEmeraldItem extends STItem {
+public class SoulEyeItem extends STItem {
 
-    public SoulEmeraldItem(int id) {
+    public SoulEyeItem(int id) {
         super(id);
-        this.setUnlocalizedName("soul_emerald");
+        this.setUnlocalizedName("soul_eye");
         this.setCreativeTab(net.minecraft.src.CreativeTabs.tabMaterials);
-        this.setTextureName("soultotem:soul_emerald");
+        this.setTextureName("soultotem:soul_eye");
     }
 
     @Override

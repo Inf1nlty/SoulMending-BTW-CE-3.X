@@ -1,4 +1,4 @@
-package com.inf1nlty.soultotem.mixin.block;
+package com.inf1nlty.soultotem.mixin.world.block;
 
 import com.inf1nlty.soultotem.block.STBlocks;
 import net.minecraft.src.*;

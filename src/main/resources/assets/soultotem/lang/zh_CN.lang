@@ -1,4 +1,4 @@
-item.soul_emerald.name=灵魂绿宝石
+item.soul_eye.name=灵魂之眼
 item.empty_soul_totem.name=空灵魂图腾
 item.soul_totem.name=灵魂图腾
 
@@ -6,7 +6,9 @@ tile.soul_totem.name=灵魂图腾
 tile.empty_soul_totem.name=空灵魂图腾
 
 empty_soul_totem.tooltip=一个空的灵魂图腾
-soul_totem.tooltip=灵魂储存量：%s / %s
+soul_totem.tooltip=灵魂储存量: %s / %s
+soul_totem.mending.ratio=修补比例: %d点灵魂 : %d点耐久
+soultotem.tooltip.cd=灵魂图腾冷却中: 剩余 %d 秒
 
 enchantment.soul_mending=灵魂修补
 
@@ -14,3 +16,6 @@ options.soulmending.soulParticles=灵魂粒子
 options.soulmending.soulHUD=灵魂储存量显示
 options.soulmending.on=开
 options.soulmending.off=关
+
+emi.soultotem.charge.tooltip=所有附身事件均可以增加图腾的灵魂储存量
+emi.soultotem.info=灵魂图腾可以通过“灵魂修补”附魔将灵魂转化为装备的修补效果。\n将附魔图腾放置在地上，然后右键将装备放上去即可。\n灵魂修补只能通过炼狱附魔台使用卷轴对图腾进行附魔，卷轴来源有牧师5级随机交易，恶魂有1/250概率掉落。\n背包内持有足够灵魂数量的灵魂图腾并且遭受致命伤害时，会消耗其5000点灵魂并且获得11秒复苏效果避免死亡。

@@ -1,4 +1,4 @@
-item.soul_emerald.name=Soul Emerald
+item.soul_eye.name=Soul Eye
 item.empty_soul_totem.name=Empty Soul Totem
 item.soul_totem.name=Soul Totem
 
@@ -7,6 +7,8 @@ tile.empty_soul_totem.name=Empty Soul Totem
 
 empty_soul_totem.tooltip=An empty vessel for souls.
 soul_totem.tooltip=Souls: %s / %s
+soul_totem.mending.ratio=Repair Ratio: %d Soul : %d Durability
+soultotem.tooltip.cd=Soul Totem is on cooldown: %d seconds left
 
 enchantment.soul_mending=Soul Mending
 
@@ -14,3 +16,6 @@ options.soulmending.soulParticles=Soul Particles
 options.soulmending.soulHUD=Soul Storage HUD
 options.soulmending.on=ON
 options.soulmending.off=OFF
+
+emi.soultotem.charge.tooltip=All possession events can increase the soul storage of the totem
+emi.soultotem.info=The Soul Totem can use the Soul Mending enchantment to convert stored souls into equipment repairs.\nAfter enchanting the totem, place it on the ground, then right-click with equipment to put it onto the totem for repair.\nSoul Mending can only be applied to the totem using a scroll at the Infernal Enchanting Table. Scrolls can be obtained from random level 5 Priest trades or have a 1/250 drop chance from Ghasts.\nIf you have a Soul Totem with enough souls in your inventory and take fatal damage, it will consume 5000 souls and grant a 11-second revival effect to prevent death.

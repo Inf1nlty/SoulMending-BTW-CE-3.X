@@ -4,3 +4,5 @@ accessible field btw/block/tileentity/HopperTileEntity containedSoulCount I
 accessible field btw/block/tileentity/HopperTileEntity filterItemID I
 accessible field net/minecraft/src/EffectRenderer renderer Lnet/minecraft/src/TextureManager;
 accessible field net/minecraft/src/EffectRenderer fxLayers [Ljava/util/List;
+accessible field net/minecraft/src/Potion isBadEffect Z
+accessible method net/minecraft/src/DataWatcher getWatchedObject (I)Lnet/minecraft/src/WatchableObject;

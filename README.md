@@ -1,21 +1,25 @@
 # Soul Totem for Better Than Wolves Community Edition (3.x)
 
-This mod adds Soul Mending to Better Than Wolves Community Edition, enabling enchanted equipment to be automatically repaired via soul possession events.  
-Designed to enhance survival and automation with unique interactions between souls, blocks, and entities!
+Adds **Soul Totem** items and the **Soul Mending** enchantment to BTW CE 3.x.
 
 ---
 
 ## Features
 
-- **Soul Mending Enchantment:** A new enchantment that allows items to be repaired through soul-related events.
-- **Integration with Containers:** Item frames and wicker baskets can repair damaged items when possessed.
-- **Repair Logic:** Repairs occur only on items with the Soul Mending enchantment, and only if the item is damaged.
+- **Soul Eye**
+- **Soul Totem**: Stores up to 10,000 souls. Can prevent fatal damage by consuming 5,000 souls, granting you 10s of revival.
+- **Empty Soul Totem**: Uncharged totem.
+- **Soul Mending Enchantment**: Lets Soul Totems repair equipments.
+- **Soul Mending Options**: Toggle soul particles and HUD in options.
+
 ---
 
-### How Soul Possession Works
+## Usage
 
-- When a soul-related event occurs (e.g., entity death, urn activation, portal tick), nearby blocks and entities implementing `SoulPossessable` will receive a possession event.
-- These mixins trigger automatic repair for damaged, enchanted items if the conditions are met.
+- **Enchant** Soul Totems at the Infernal Enchanting Table using a scroll (from level 5 Cleric trades or rare Ghast drops).
+- **Repair**: Right-click equipment on a placed, enchanted Soul Totem to repair (consumes souls).
+- **Gain Souls**: All possession events (entity death, urn use, portal tick) charge the Soul Totem.
+- **Death Protection**: With enough souls, totem in inventory prevents death once (5000 soul cost, 10s cooldown).
 
 ---
 
@@ -25,9 +29,9 @@ Designed to enhance survival and automation with unique interactions between sou
 
 ---
 
-## How to Install
+## Install
 
-1. [Download the latest release (.jar)](https://github.com/Inf1nlty/SoulMending-BTWCE3.0/releases/latest)
+1. [Download the latest release (.jar)](https://github.com/Inf1nlty/SoulTotem-BTWCE3.0/releases/latest)
 2. Place it into your `mods` folder.
 3. Start Minecraft with BTW Community Edition.
 

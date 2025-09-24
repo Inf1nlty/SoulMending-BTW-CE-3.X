@@ -1,4 +1,4 @@
-package com.inf1nlty.soultotem.mixin.entity;
+package com.inf1nlty.soultotem.mixin.world.entity;
 
 import com.inf1nlty.soultotem.util.InventoryHelper;
 import net.minecraft.src.DamageSource;
@@ -19,8 +19,13 @@ public abstract class EntityLivingBaseMixin {
 
             if (!player.worldObj.isRemote && player.getHealth() - amount <= 0.0F) {
                 if (InventoryHelper.trySoulTotemRevive(player)) {
-                    player.setHealth(2.0F);
+
                     cir.setReturnValue(false);
+
+                    player.setHealth(2.0F);
+                    player.hurtTime = player.maxHurtTime = 10;
+                    player.limbSwingAmount = 1.5F;
+                    player.worldObj.setEntityState(player, (byte)2);
                 }
             }
         }

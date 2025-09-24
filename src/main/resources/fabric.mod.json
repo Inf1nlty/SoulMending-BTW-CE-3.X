@@ -19,6 +19,9 @@
     ],
     "btw:addon": [
       "btw.community.soultotem.SoulTotemAddon"
+    ],
+    "emi": [
+      "com.inf1nlty.soultotem.emi.STEmiPlugin"
     ]
   },
   "custom": {

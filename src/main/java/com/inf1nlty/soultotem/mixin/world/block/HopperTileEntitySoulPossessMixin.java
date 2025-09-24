@@ -1,29 +1,42 @@
-package com.inf1nlty.soultotem.mixin.block;
+package com.inf1nlty.soultotem.mixin.world.block;
 
 import com.inf1nlty.soultotem.util.ISoulPossessable;
+import btw.block.tileentity.HopperTileEntity;
 import net.minecraft.src.*;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.Random;
 
-@Mixin(BlockPortal.class)
-public abstract class BlockPortalSoulPossessMixin {
+@Mixin(HopperTileEntity.class)
+public abstract class HopperTileEntitySoulPossessMixin {
 
-    @Inject(method = "updateTick", at = @At("TAIL"))
-    public void onUpdateTick(World world, int x, int y, int z, Random rand, CallbackInfo ci) {
+    @Inject(method = "updateEntity", at = @At(value = "FIELD", target = "Lbtw/block/tileentity/HopperTileEntity;containedSoulCount:I", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
+    public void onUpdateSoulPossess(CallbackInfo ci) {
+        trySoulPossess((HopperTileEntity)(Object)this);
+    }
 
-        if (rand.nextInt(2) == 0 && world.provider.isSurfaceWorld()) {
+    @Inject(method = "hopperSoulOverload", at = @At("TAIL"), remap = false)
+    public void onOverloadSoulPossess(CallbackInfo ci) {
+        trySoulPossess((HopperTileEntity)(Object)this);
+    }
+
+    @Unique
+    private void trySoulPossess(HopperTileEntity self) {
+        World world = self.worldObj;
+
+        if (!world.isRemote && self.filterItemID == Block.slowSand.blockID) {
+
             int range = 16;
             AxisAlignedBB aabb = AxisAlignedBB.getAABBPool().getAABB(
-                    x - range, y - range, z - range,
-                    x + range, y + range, z + range
+                    self.xCoord - range, self.yCoord - range, self.zCoord - range,
+                    self.xCoord + range, self.yCoord + range, self.zCoord + range
             );
 
-            // EntityCreature
             boolean possessed = false;
             @SuppressWarnings("unchecked")
             List<Entity> creatures = world.getEntitiesWithinAABB(EntityCreature.class, aabb);

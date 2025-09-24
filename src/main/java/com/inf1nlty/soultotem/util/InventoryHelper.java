@@ -3,9 +3,13 @@ package com.inf1nlty.soultotem.util;
 import btw.community.soultotem.SoulTotemAddon;
 import com.inf1nlty.soultotem.block.STBlocks;
 import com.inf1nlty.soultotem.item.EmptySoulTotemItem;
+import com.inf1nlty.soultotem.item.ITotemCD;
 import com.inf1nlty.soultotem.item.SoulTotemItem;
+import com.inf1nlty.soultotem.network.TotemCDNet;
 import com.inf1nlty.soultotem.network.TotemParticleNet;
 import net.minecraft.src.*;
+
+import java.util.ArrayList;
 
 public class InventoryHelper {
 
@@ -125,6 +129,8 @@ public class InventoryHelper {
 
     public static boolean trySoulTotemRevive(EntityPlayer player) {
 
+        final int SOUL_TOTEM_CD_TICKS = 200;
+
         IInventory inv = player.inventory;
         int bestIndex = -1;
         int maxSoul = -1;
@@ -133,17 +139,25 @@ public class InventoryHelper {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null && stack.getItem() == STBlocks.soulTotemItem) {
                 int soul = SoulTotemItem.getStoredSoul(stack);
-                if (soul >= 1 && soul > maxSoul) {
+                if (soul >= 5000 && soul > maxSoul) {
                     maxSoul = soul;
                     bestIndex = i;
                 }
             }
         }
 
+        ITotemCD cd = (ITotemCD) player;
+        int lastUse = cd.soulTotem$getSoulTotemLastReviveTick();
+        long now = player.worldObj.getTotalWorldTime();
+
+        if (now - lastUse < SOUL_TOTEM_CD_TICKS) {
+            return false;
+        }
+
         if (bestIndex != -1) {
             ItemStack stack = inv.getStackInSlot(bestIndex);
 
-            int newSoul = maxSoul - 1;
+            int newSoul = maxSoul - 5000;
 
             if (newSoul <= 0) {
                 ItemStack empty = InventoryHelper.convertToEmptySoulTotem(stack);
@@ -153,13 +167,35 @@ public class InventoryHelper {
                 SoulTotemItem.setStoredSoul(stack, newSoul);
             }
 
-            player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 20*10, 4)); // Absorption V, 10s
-            player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 20*10, 1)); // Regeneration II, 10s
-            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 20*10, 2));   // Resistance III, 10s
+            if (!player.worldObj.isRemote) {
+                PotionEffectQueue.enqueue(() -> {
+                    ArrayList<Integer> toRemove = new ArrayList<>();
+                    for (Object obj : player.getActivePotionEffects()) {
+                        PotionEffect effect = (PotionEffect) obj;
+                        Potion potion = Potion.potionTypes[effect.getPotionID()];
+                        if (potion != null && potion.isBadEffect) {
+                            toRemove.add(effect.getPotionID());
+                        }
+                    }
+                    for (int id : toRemove) {
+                        player.removePotionEffect(id);
+                    }
+                });
+            }
+
+            PotionEffectQueue.enqueue(() -> player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 220, 4))); // Absorption V, 11s
+            PotionEffectQueue.enqueue(() -> player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 220, 1))); // Regeneration II, 11s
+            PotionEffectQueue.enqueue(() -> player.addPotionEffect(new PotionEffect(Potion.resistance.id, 220, 2)));   // Resistance III, 11s
             player.worldObj.playSoundAtEntity(player, SoulTotemAddon.SOUL_TOTEM_USE.sound(), 1.0F, 1.0F);
+            player.hurtResistantTime = player.maxHurtResistantTime;
 
             if (!player.worldObj.isRemote && player instanceof EntityPlayerMP) {
                 TotemParticleNet.sendTotemRevive((EntityPlayerMP)player, player.posX, player.posY + 1.0, player.posZ);
+            }
+
+            cd.soulTotem$setSoulTotemLastReviveTick((int) now);
+            if (!player.worldObj.isRemote && player instanceof EntityPlayerMP) {
+                TotemCDNet.sendTotemCD((EntityPlayerMP)player, (int)now);
             }
             return true;
         }

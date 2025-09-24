@@ -1,4 +1,4 @@
-package com.inf1nlty.soultotem.mixin.entity;
+package com.inf1nlty.soultotem.mixin.world.entity;
 
 import btw.entity.UrnEntity;
 import com.inf1nlty.soultotem.util.ISoulPossessable;

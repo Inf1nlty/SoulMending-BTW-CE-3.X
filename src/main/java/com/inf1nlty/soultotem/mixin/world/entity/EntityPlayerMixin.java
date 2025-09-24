@@ -1,10 +1,13 @@
-package com.inf1nlty.soultotem.mixin.entity;
+package com.inf1nlty.soultotem.mixin.world.entity;
 
+import com.inf1nlty.soultotem.item.ITotemCD;
 import com.inf1nlty.soultotem.util.InventoryHelper;
 import com.inf1nlty.soultotem.util.ISoulPossessable;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,7 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Random;
 
 @Mixin(EntityPlayer.class)
-public abstract class EntityPlayerMixin implements ISoulPossessable {
+public abstract class EntityPlayerMixin implements ISoulPossessable, ITotemCD {
+
+    @Unique public int soulTotemLastReviveTick = 0;
 
     public void soulMending$onSoulPossession() {
         EntityPlayer self = (EntityPlayer)(Object)this;
@@ -28,6 +33,27 @@ public abstract class EntityPlayerMixin implements ISoulPossessable {
             if (rand.nextInt(1000) == 0) {
                 this.soulMending$onSoulPossession();
             }
+        }
+    }
+
+    @Override
+    public int soulTotem$getSoulTotemLastReviveTick() {
+        return soulTotemLastReviveTick;
+    }
+
+    @Override
+    public void soulTotem$setSoulTotemLastReviveTick(int tick) {
+        soulTotemLastReviveTick = tick;
+    }
+
+    @Inject(method = "writeEntityToNBT", at = @At("TAIL"))
+    public void writeSoulTotemCD(NBTTagCompound tag, CallbackInfo ci) {
+        tag.setInteger("SoulTotemLastRevive", soulTotemLastReviveTick);
+    }
+    @Inject(method = "readEntityFromNBT", at = @At("TAIL"))
+    public void readSoulTotemCD(NBTTagCompound tag, CallbackInfo ci) {
+        if (tag.hasKey("SoulTotemLastRevive")) {
+            soulTotemLastReviveTick = tag.getInteger("SoulTotemLastRevive");
         }
     }
 }

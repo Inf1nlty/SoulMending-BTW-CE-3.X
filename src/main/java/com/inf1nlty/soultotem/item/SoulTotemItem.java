@@ -4,6 +4,7 @@ import btw.util.MiscUtils;
 import com.inf1nlty.soultotem.STEnchantments;
 import com.inf1nlty.soultotem.block.STBlocks;
 import com.inf1nlty.soultotem.block.tileentity.TileEntitySoulTotem;
+import com.inf1nlty.soultotem.util.SoulMendingHelper;
 import net.minecraft.src.*;
 import java.util.List;
 
@@ -64,6 +65,23 @@ public class SoulTotemItem extends STItem {
 
         String colorMax = "§7" + MAX_SOUL + "§f";
         info.add(String.format(StatCollector.translateToLocal("soul_totem.tooltip"), color + storedSoul + "§f", colorMax));
+
+        int mendingLevel = EnchantmentHelper.getEnchantmentLevel(STEnchantments.SOUL_MENDING_ID, stack);
+        if (mendingLevel > 0) {
+            int soulNeeded = SoulMendingHelper.getSoulNeeded(mendingLevel);
+             info.add(StatCollector.translateToLocalFormatted("soul_totem.mending.ratio", soulNeeded, 1));
+        }
+
+        if (player instanceof ITotemCD cd) {
+            int lastUse = cd.soulTotem$getSoulTotemLastReviveTick();
+            long now = player.worldObj.getTotalWorldTime();
+            final int SOUL_TOTEM_CD_TICKS = 200;
+            int leftTicks = (int) (SOUL_TOTEM_CD_TICKS - (now - lastUse));
+            if (leftTicks > 0) {
+                int leftSec = leftTicks / 20;
+                info.add("§c" + StatCollector.translateToLocalFormatted("soultotem.tooltip.cd", leftSec));
+            }
+        }
     }
 
     public static int getStoredSoul(ItemStack stack) {

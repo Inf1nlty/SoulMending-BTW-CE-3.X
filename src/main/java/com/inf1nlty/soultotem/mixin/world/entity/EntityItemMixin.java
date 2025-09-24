@@ -1,4 +1,4 @@
-package com.inf1nlty.soultotem.mixin.entity;
+package com.inf1nlty.soultotem.mixin.world.entity;
 
 import com.inf1nlty.soultotem.block.STBlocks;
 import com.inf1nlty.soultotem.item.SoulTotemItem;

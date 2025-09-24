@@ -24,7 +24,7 @@ public class SoulMendingHelper {
         return storedSoul;
     }
 
-    private static int getSoulNeeded(int level) {
+    public static int getSoulNeeded(int level) {
         return switch (level) {
             case 2 -> 8;
             case 3 -> 6;
