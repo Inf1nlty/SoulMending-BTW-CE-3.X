@@ -54,6 +54,7 @@ public class STInit {
                 .input(TradeItem.fromID(Item.paper.itemID))
                 .secondInput(TradeItem.fromID(Item.emerald.itemID, 32, 64))
                 .output(TradeItem.fromIDAndMetadata(BTWItems.arcaneScroll.itemID, STEnchantments.SOUL_MENDING_ID))
+                .weight(0.25f)
                 // 100% chance
 //                .mandatory()
                 .addToTradeList();
