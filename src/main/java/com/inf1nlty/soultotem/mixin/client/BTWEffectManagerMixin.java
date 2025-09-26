@@ -15,22 +15,27 @@ public abstract class BTWEffectManagerMixin {
     private static void soulmending$injectCustomSoulParticle(CallbackInfo ci) {
         int id = 2286;
         EffectHandler.effectMap.compute(id, (k, original) -> (mc, world, player, x, y, z, data) -> {
-            if (data == 10000) {
-                EntitySoulFX.spawnRing(world, x + 0.5, y, z + 0.5);
 
-            } else if (data == 10010) {
+            if (data == 10010) {
                 EntitySoulFX.spawnGatherToBlock(world, x, y, z);
 
             } else if (data == 10011) {
                 EntitySoulFX.findAndSpawnGatherToItem(world, x, y, z);
 
             } else if (data == 10086) {
-                    EntitySoulFX.spawnRingToPlayer(world, x, y, z);
+                EntitySoulFX.spawnRingToPlayer(world, x, y, z);
             }
 
             if (original != null) {
                 original.playEffect(mc, world, player, x, y, z, data);
             }
         });
+
+        EffectHandler.effectMap.put(10086, (mc, world, player, x, y, z, data) -> {
+            if (data == 10000) {
+                EntitySoulFX.spawnRing(world, x, y, z);
+            }
+        });
+
     }
 }

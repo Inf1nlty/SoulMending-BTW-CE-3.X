@@ -1,6 +1,7 @@
 package com.inf1nlty.soultotem.block.tileentity;
 
 import btw.block.tileentity.TileEntityDataPacketHandler;
+import btw.community.soultotem.SoulTotemAddon;
 import com.inf1nlty.soultotem.STEnchantments;
 import com.inf1nlty.soultotem.block.STBlocks;
 import com.inf1nlty.soultotem.client.EntitySoulFX;
@@ -56,7 +57,8 @@ public class TileEntitySoulTotem extends TileEntity implements IInventory, TileE
                     if (worldObj.isRemote) {
                         EntitySoulFX.spawnRing(worldObj, xCoord + 0.5, yCoord, zCoord + 0.5);
                     }
-                    worldObj.playAuxSFX(2286, xCoord, yCoord, zCoord, 10000);
+                    worldObj.playAuxSFX(10086, xCoord, yCoord, zCoord, 10000);
+                    worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, SoulTotemAddon.SOUL_TOTEM_FIX.sound(), 1.0F, 1.0F);
                     particleCooldown = cooldownTicks;
                 }
                 setStoredSoul(newStoredSoul);
