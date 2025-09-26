@@ -195,21 +195,24 @@ public class EntitySoulFX extends EntityFX {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.effectRenderer == null) return;
 
-        double targetY = blockY + 1.5;
+        double centerX = blockX + 0.5;
+        double centerY = blockY + 0.5;
+        double centerZ = blockZ + 0.5;
+        double targetY = centerY + 0.75;
 
-        int count = 6 + world.rand.nextInt(3);
+        int count = 1 + world.rand.nextInt(3);
 
         ParticleSpawnQueue.enqueue(() -> {
             for (int i = 0; i < count; i++) {
                 double angle = world.rand.nextDouble() * Math.PI * 2.0;
                 double radius = 0.7 + world.rand.nextDouble() * 1.7;
-                double y = blockY + 0.2 + world.rand.nextDouble() * 0.5;
-                double x = blockX + Math.cos(angle) * radius;
-                double z = blockZ + Math.sin(angle) * radius;
+                double y = centerY + 0.2 + world.rand.nextDouble() * 0.5;
+                double x = centerX + Math.cos(angle) * radius;
+                double z = centerZ + Math.sin(angle) * radius;
 
                 x += (world.rand.nextDouble() - 0.5) * 0.3;
                 z += (world.rand.nextDouble() - 0.5) * 0.3;
-                mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, blockX, targetY, blockZ, true));
+                mc.effectRenderer.addEffect(new EntitySoulFX(world, x, y, z, centerX, targetY, centerZ, true));
             }
         });
     }

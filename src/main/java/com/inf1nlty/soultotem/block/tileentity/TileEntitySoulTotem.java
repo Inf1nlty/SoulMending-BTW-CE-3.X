@@ -13,10 +13,11 @@ import net.minecraft.src.*;
 public class TileEntitySoulTotem extends TileEntity implements IInventory, TileEntityDataPacketHandler, ISoulPossessable, ITotemTileEntity {
 
     private ItemStack[] inventory = new ItemStack[1];
-    private int storedSoul = 0;
-    public int interactCooldown = 0;
-    public int particleCooldown = 0;
-    private NBTTagList enchantTag = null;
+    private int storedSoul;
+    public int interactCooldown;
+    public int particleCooldown;
+    public int soundCooldown;
+    private NBTTagList enchantTag;
 
     public ItemStack getTotemAsItemStack() {
         ItemStack fake = new ItemStack(STBlocks.soulTotemItem);
@@ -33,6 +34,7 @@ public class TileEntitySoulTotem extends TileEntity implements IInventory, TileE
 
         if (interactCooldown > 0) interactCooldown--;
         if (particleCooldown > 0) particleCooldown--;
+        if (soundCooldown > 0) soundCooldown--;
 
         if (!worldObj.isRemote && worldObj.provider.dimensionId == -1 && worldObj.rand.nextInt(1000) == 0) {
             absorbSoul(10);
@@ -54,13 +56,21 @@ public class TileEntitySoulTotem extends TileEntity implements IInventory, TileE
                 };
 
                 if (particleCooldown <= 0) {
+
                     if (worldObj.isRemote) {
                         EntitySoulFX.spawnRing(worldObj, xCoord + 0.5, yCoord, zCoord + 0.5);
                     }
                     worldObj.playAuxSFX(10086, xCoord, yCoord, zCoord, 10000);
-                    worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, SoulTotemAddon.SOUL_TOTEM_FIX.sound(), 1.0F, 1.0F);
                     particleCooldown = cooldownTicks;
                 }
+
+                int soundCooldownTicks = 100;
+
+                if (soundCooldown <= 0) {
+                    worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, SoulTotemAddon.SOUL_TOTEM_FIX.sound(), 1.0F, 1.0F);
+                    soundCooldown = soundCooldownTicks;
+                }
+
                 setStoredSoul(newStoredSoul);
             }
 

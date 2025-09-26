@@ -7,8 +7,8 @@ import net.minecraft.src.*;
 
 public class TileEntityEmptySoulTotem extends TileEntity implements TileEntityDataPacketHandler, ISoulPossessable, ITotemTileEntity {
 
-    private NBTTagList enchantTag = null;
-    private transient boolean suppressNextDrop = false;
+    private NBTTagList enchantTag;
+    private transient boolean suppressNextDrop;
 
     public void setEnchantTag(NBTTagList tag) {
         this.enchantTag = tag;
