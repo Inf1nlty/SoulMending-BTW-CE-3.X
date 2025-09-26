@@ -1,10 +1,14 @@
 package com.inf1nlty.soultotem.block;
 
 import btw.block.util.RayTraceUtils;
+import btw.community.soultotem.SoulTotemAddon;
 import com.inf1nlty.soultotem.block.tileentity.TileEntitySoulTotem;
 import com.inf1nlty.soultotem.item.SoulTotemItem;
 import com.inf1nlty.soultotem.util.InventoryHelper;
 import net.minecraft.src.*;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class BlockSoulTotem extends BlockContainer {
 
@@ -58,7 +62,19 @@ public class BlockSoulTotem extends BlockContainer {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int blockId, int meta) {
+        if (!world.isRemote) {world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, SoulTotemAddon.TOTEM_BREAK.sound(), 1.0F, 1.0F);
+        }
         super.breakBlock(world, x, y, z, blockId, meta);
+    }
+
+    @Override
+    public int idDropped(int meta, Random random, int fortune) {
+        return 0;
+    }
+
+    @Override
+    public int quantityDropped(Random random) {
+        return 0;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.inf1nlty.soultotem.item;
 
+import btw.community.soultotem.SoulTotemAddon;
 import btw.util.MiscUtils;
 import com.inf1nlty.soultotem.STEnchantments;
 import com.inf1nlty.soultotem.block.STBlocks;
@@ -130,7 +131,7 @@ public class SoulTotemItem extends STItem {
                 ((TileEntitySoulTotem) te).setEnchantTag(stack.stackTagCompound.getTagList("ench"));
             }
         }
-        world.playSoundEffect(placeX + 0.5, placeY + 0.5, placeZ + 0.5, "step.cloth", 0.7F, 1.0F);
+        world.playSoundEffect(placeX + 0.5, placeY + 0.5, placeZ + 0.5, SoulTotemAddon.TOTEM_PLACE.sound(), 1.0F, 1.0F);
 
         if (!player.capabilities.isCreativeMode) {
             --stack.stackSize;

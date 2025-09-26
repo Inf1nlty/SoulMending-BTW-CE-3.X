@@ -17,6 +17,9 @@ import net.fabricmc.loader.api.FabricLoader;
 public class SoulTotemAddon extends BTWAddon {
 
     public static final AddonSoundRegistryEntry SOUL_TOTEM_USE = new AddonSoundRegistryEntry("soultotem:totem_use");
+    public static final AddonSoundRegistryEntry SOUL_TOTEM_FIX = new AddonSoundRegistryEntry("soultotem:totem_fix");
+    public static final AddonSoundRegistryEntry TOTEM_PLACE = new AddonSoundRegistryEntry("soultotem:totem_place");
+    public static final AddonSoundRegistryEntry TOTEM_BREAK = new AddonSoundRegistryEntry("soultotem:totem_break");
 
     @Override
     public void initialize() {
