@@ -46,40 +46,48 @@ public class STInit {
                         'S', STItems.soul_eye, 'G', Item.ingotGold, 'N', Item.netherStar, 'C', new ItemStack(BTWBlocks.companionCube, 1, 8)});
     }
 
-    private static void addPriestTrades(){
+    private static void addPriestTrades() {
 
-        EntityVillager.removeCustomTrade(2,
-                TradeProvider.getBuilder()
-                        .name("btw:sell_fortune_scroll")
-                        .profession(2)
-                        .level(5)
-                        .arcaneScroll()
-                        .scrollEnchant(Enchantment.fortune)
-                        .secondaryEmeraldCost(48, 64)
-                        .mandatory()
-                        .build()
-        );
+        boolean nightmareLoaded = false;
+        Class<?> bloodOrbClass = null;
+        try {
+            Class<?> nmItemsClass = Class.forName("com.itlesports.nightmaremode.item.NMItems");
+            nightmareLoaded = true;
+            bloodOrbClass = nmItemsClass;
+        } catch (ClassNotFoundException ignored) {
+        }
+        Item bloodOrb = null;
+        if (nightmareLoaded) {
+            try {
+                bloodOrb = (Item) bloodOrbClass.getField("bloodOrb").get(null);
+            } catch (Exception e) {
+                System.err.println("[SoulTotem] Failed to get NMItems.bloodOrb for soul_mending villager trade!");
+                System.err.println("[SoulTotem] Exception: " + e);
+            }
+        }
 
-        TradeProvider.getBuilder()
-                .name("btw:sell_fortune_scroll")
-                .profession(2)
-                .level(5)
-                .arcaneScroll()
-                .scrollEnchant(Enchantment.fortune)
-                .secondaryEmeraldCost(48, 64)
-                .mandatory()
-                .condition(villager -> villager.getRNG().nextFloat() < 0.5f)
-                .addToTradeList();
-
-        TradeProvider.getBuilder()
-                .name("stPriestSoulMendingScroll")
-                .profession(2)
-                .level(5)
-                .arcaneScroll()
-                .scrollEnchant(STEnchantments.soulMending)
-                .secondaryEmeraldCost(32, 64)
-                .mandatory()
-                .condition(villager -> villager.getRNG().nextFloat() >= 0.5f)
-                .addToTradeList();
+        if (bloodOrb != null) {
+            TradeProvider.getBuilder()
+                    .name("stPriestSoulMendingScroll")
+                    .profession(2)
+                    .level(5)
+                    .convert()
+                    .input(TradeItem.fromID(Item.paper.itemID))
+                    .secondInput(TradeItem.fromID(bloodOrb.itemID, 24, 32))
+                    .output(TradeItem.fromIDAndMetadata(BTWItems.arcaneScroll.itemID, STEnchantments.SOUL_MENDING_ID))
+                    .weight(1.0f)
+                    .addToTradeList();
+        }
+        else {
+            TradeProvider.getBuilder()
+                    .name("stPriestSoulMendingScroll")
+                    .profession(2)
+                    .level(5)
+                    .arcaneScroll()
+                    .scrollEnchant(STEnchantments.soulMending)
+                    .secondaryEmeraldCost(32, 64)
+                    .mandatory()
+                    .addToTradeList();
+        }
     }
 }
